@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Hotels - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1>TravelEase</h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fas fa-home"></i>Home</a></li>
+                <li><a href="customize-trip.html"><i class="fas fa-map-marked-alt"></i>Customize Trip</a></li>
+                <li><a href="attractions.html"><i class="fas fa-landmark"></i>Top Attractions</a></li>
+                <li><a href="hotels.html" class="book-hotel-btn"><i class="fas fa-hotel"></i>Book Hotels</a></li>
+                <li><a href="ai-planner.html"><i class="fas fa-robot"></i>AI Trip Planner</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="hotel-booking-container">
+        <section class="hotel-search-section">
+            <h1 class="hotel-search-title">Find Your Perfect Stay</h1>
+            <p class="hotel-search-subtitle">Search from thousands of hotels worldwide</p>
+            
+            <form class="hotel-search-form">
+                <div class="search-input-group">
+                    <label>Destination</label>
+                    <input type="text" class="search-input" placeholder="Where are you going?">
+                </div>
+                <div class="search-input-group">
+                    <label>Check-in</label>
+                    <input type="date" class="search-input">
+                </div>
+                <div class="search-input-group">
+                    <label>Check-out</label>
+                    <input type="date" class="search-input">
+                </div>
+                <div class="search-input-group">
+                    <label>Guests</label>
+                    <select class="search-input">
+                        <option>1 Adult</option>
+                        <option>2 Adults</option>
+                        <option>2 Adults, 1 Child</option>
+                        <option>2 Adults, 2 Children</option>
+                    </select>
+                </div>
+                <button type="submit" class="search-button">
+                    <i class="fas fa-search"></i> Search Hotels
+                </button>
+            </form>
+        </section>
+
+        <section class="hotel-filters">
+            <div class="filter-group">
+                <label class="filter-label">Price Range:</label>
+                <select class="filter-select">
+                    <option>All Prices</option>
+                    <option>$0 - $100</option>
+                    <option>$100 - $200</option>
+                    <option>$200 - $300</option>
+                    <option>$300+</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Star Rating:</label>
+                <select class="filter-select">
+                    <option>All Stars</option>
+                    <option>5 Stars</option>
+                    <option>4 Stars</option>
+                    <option>3 Stars</option>
+                    <option>2 Stars</option>
+                </select>
+            </div>
+            <div class="filter-group">
+                <label class="filter-label">Property Type:</label>
+                <select class="filter-select">
+                    <option>All Types</option>
+                    <option>Hotels</option>
+                    <option>Resorts</option>
+                    <option>Apartments</option>
+                    <option>Villas</option>
+                </select>
+            </div>
+        </section>
+
+        <section class="hotel-grid">
+            <!-- Hotel Card 1 -->
+            <article class="hotel-card">
+                <div class="hotel-image">
+                    <img src="../images/hotels/luxury-hotel-1.jpg" alt="Luxury Hotel">
+                    <span class="hotel-badge">Popular</span>
+                </div>
+                <div class="hotel-content">
+                    <h3 class="hotel-name">Grand Luxury Resort & Spa</h3>
+                    <div class="hotel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Downtown, New York</span>
+                    </div>
+                    <div class="hotel-rating">
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">
+                            <i class="fas fa-wifi"></i> Free WiFi
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-swimming-pool"></i> Pool
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-spa"></i> Spa
+                        </span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <span class="price-amount">$299</span>
+                            <span class="price-period">/night</span>
+                        </div>
+                        <button class="book-now-btn">Book Now</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Hotel Card 2 -->
+            <article class="hotel-card">
+                <div class="hotel-image">
+                    <img src="../images/hotels/boutique-hotel-1.jpg" alt="Boutique Hotel">
+                    <span class="hotel-badge">Best Value</span>
+                </div>
+                <div class="hotel-content">
+                    <h3 class="hotel-name">Boutique City Hotel</h3>
+                    <div class="hotel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Chelsea, London</span>
+                    </div>
+                    <div class="hotel-rating">
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">
+                            <i class="fas fa-wifi"></i> Free WiFi
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-utensils"></i> Restaurant
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-dumbbell"></i> Gym
+                        </span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <span class="price-amount">$199</span>
+                            <span class="price-period">/night</span>
+                        </div>
+                        <button class="book-now-btn">Book Now</button>
+                    </div>
+                </div>
+            </article>
+
+            <!-- Hotel Card 3 -->
+            <article class="hotel-card">
+                <div class="hotel-image">
+                    <img src="../images/hotels/beach-resort-1.jpg" alt="Beach Resort">
+                    <span class="hotel-badge">Beachfront</span>
+                </div>
+                <div class="hotel-content">
+                    <h3 class="hotel-name">Oceanview Beach Resort</h3>
+                    <div class="hotel-location">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>Maldives</span>
+                    </div>
+                    <div class="hotel-rating">
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                        <i class="fas fa-star rating-star"></i>
+                    </div>
+                    <div class="hotel-amenities">
+                        <span class="amenity">
+                            <i class="fas fa-umbrella-beach"></i> Private Beach
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-swimming-pool"></i> Infinity Pool
+                        </span>
+                        <span class="amenity">
+                            <i class="fas fa-spa"></i> Spa
+                        </span>
+                    </div>
+                    <div class="hotel-price">
+                        <div>
+                            <span class="price-amount">$499</span>
+                            <span class="price-period">/night</span>
+                        </div>
+                        <button class="book-now-btn">Book Now</button>
+                    </div>
+                </div>
+            </article>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 TravelEase. All rights reserved.</p>
+    </footer>
+
+    <script src="../js/hotels.js"></script>
+</body>
+</html> 

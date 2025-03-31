@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Search Results - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .results-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .route-info h2 {
+            color: #1a365d;
+            font-size: 1.5rem;
+            margin: 0;
+        }
+
+        .journey-date {
+            color: #64748b;
+            font-size: 1rem;
+        }
+
+        .modify-search {
+            background: #e2e8f0;
+            color: #1a365d;
+            padding: 0.5rem 1rem;
+            border-radius: 0.5rem;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .modify-search:hover {
+            background: #cbd5e1;
+        }
+
+        .bus-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+
+        .bus-header {
+            background: #f8fafc;
+            padding: 1rem;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .bus-name {
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+
+        .bus-type {
+            color: #2563eb;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+
+        .bus-details {
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #1a365d;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .facilities {
+            padding: 1rem;
+            background: #f8fafc;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .facility {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .facility i {
+            color: #2563eb;
+        }
+
+        .bus-footer {
+            padding: 1rem;
+            background: #fff;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .price {
+            color: #1a365d;
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .tax-note {
+            color: #64748b;
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        .select-seats {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .select-seats:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem;
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .no-results h2 {
+            color: #1a365d;
+            margin-bottom: 1rem;
+        }
+
+        .no-results p {
+            color: #64748b;
+            margin-bottom: 1.5rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group h3 {
+            color: #1a365d;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-option {
+            background: #f1f5f9;
+            color: #1a365d;
+            padding: 0.5rem 1rem;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .filter-option:hover,
+        .filter-option.active {
+            background: #2563eb;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html" class="active">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="results-container">
+        <div class="search-summary">
+            <div class="route-info">
+                <h2><span id="fromCity">Delhi</span> → <span id="toCity">Manali</span></h2>
+                <span class="journey-date" id="journeyDate">30 March 2024</span>
+            </div>
+            <a href="book-bus.html" class="modify-search">Modify Search</a>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <h3>Bus Type</h3>
+                <div class="filter-options">
+                    <div class="filter-option active">All</div>
+                    <div class="filter-option">AC Sleeper</div>
+                    <div class="filter-option">Non AC Sleeper</div>
+                    <div class="filter-option">AC Seater</div>
+                    <div class="filter-option">Deluxe</div>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Departure Time</h3>
+                <div class="filter-options">
+                    <div class="filter-option active">All</div>
+                    <div class="filter-option">Morning (6 AM - 12 PM)</div>
+                    <div class="filter-option">Afternoon (12 PM - 6 PM)</div>
+                    <div class="filter-option">Evening (6 PM - 12 AM)</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="busResults">
+            <!-- Bus Card 1 -->
+            <div class="bus-card">
+                <div class="bus-header">
+                    <div>
+                        <div class="bus-name">Volvo Multi-Axle</div>
+                        <div class="bus-type">AC Sleeper</div>
+                    </div>
+                    <div class="ratings">
+                        <i class="fas fa-star" style="color: #fbbf24;"></i>
+                        <span>4.5/5</span>
+                    </div>
+                </div>
+                <div class="bus-details">
+                    <div class="detail-group">
+                        <span class="detail-label">Departure</span>
+                        <span class="detail-value">9:00 PM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Duration</span>
+                        <span class="detail-value">12h 00m</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Arrival</span>
+                        <span class="detail-value">9:00 AM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Boarding Point</span>
+                        <span class="detail-value">ISBT Kashmere Gate</span>
+                    </div>
+                </div>
+                <div class="facilities">
+                    <div class="facility"><i class="fas fa-snowflake"></i> AC</div>
+                    <div class="facility"><i class="fas fa-bed"></i> Sleeper</div>
+                    <div class="facility"><i class="fas fa-wifi"></i> WiFi</div>
+                    <div class="facility"><i class="fas fa-charging-station"></i> Charging Point</div>
+                    <div class="facility"><i class="fas fa-tv"></i> Entertainment</div>
+                </div>
+                <div class="bus-footer">
+                    <div>
+                        <div class="price">₹1,200</div>
+                        <div class="tax-note">inclusive of all taxes</div>
+                    </div>
+                    <button class="select-seats" onclick="selectSeats('Volvo Multi-Axle', 'AC Sleeper', '1200')">Select Seats</button>
+                </div>
+            </div>
+
+            <!-- Bus Card 2 -->
+            <div class="bus-card">
+                <div class="bus-header">
+                    <div>
+                        <div class="bus-name">Scania Premium</div>
+                        <div class="bus-type">AC Seater</div>
+                    </div>
+                    <div class="ratings">
+                        <i class="fas fa-star" style="color: #fbbf24;"></i>
+                        <span>4.3/5</span>
+                    </div>
+                </div>
+                <div class="bus-details">
+                    <div class="detail-group">
+                        <span class="detail-label">Departure</span>
+                        <span class="detail-value">8:30 PM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Duration</span>
+                        <span class="detail-value">12h 00m</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Arrival</span>
+                        <span class="detail-value">8:30 AM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Boarding Point</span>
+                        <span class="detail-value">Majnu Ka Tilla</span>
+                    </div>
+                </div>
+                <div class="facilities">
+                    <div class="facility"><i class="fas fa-snowflake"></i> AC</div>
+                    <div class="facility"><i class="fas fa-couch"></i> Reclining Seats</div>
+                    <div class="facility"><i class="fas fa-wifi"></i> WiFi</div>
+                    <div class="facility"><i class="fas fa-charging-station"></i> Charging Point</div>
+                </div>
+                <div class="bus-footer">
+                    <div>
+                        <div class="price">₹800</div>
+                        <div class="tax-note">inclusive of all taxes</div>
+                    </div>
+                    <button class="select-seats" onclick="selectSeats('Scania Premium', 'AC Seater', '800')">Select Seats</button>
+                </div>
+            </div>
+
+            <!-- Bus Card 3 -->
+            <div class="bus-card">
+                <div class="bus-header">
+                    <div>
+                        <div class="bus-name">Bharat Benz</div>
+                        <div class="bus-type">Non AC Sleeper</div>
+                    </div>
+                    <div class="ratings">
+                        <i class="fas fa-star" style="color: #fbbf24;"></i>
+                        <span>4.0/5</span>
+                    </div>
+                </div>
+                <div class="bus-details">
+                    <div class="detail-group">
+                        <span class="detail-label">Departure</span>
+                        <span class="detail-value">7:30 PM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Duration</span>
+                        <span class="detail-value">13h 00m</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Arrival</span>
+                        <span class="detail-value">8:30 AM</span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Boarding Point</span>
+                        <span class="detail-value">Anand Vihar ISBT</span>
+                    </div>
+                </div>
+                <div class="facilities">
+                    <div class="facility"><i class="fas fa-bed"></i> Sleeper</div>
+                    <div class="facility"><i class="fas fa-charging-station"></i> Charging Point</div>
+                    <div class="facility"><i class="fas fa-first-aid"></i> First Aid</div>
+                </div>
+                <div class="bus-footer">
+                    <div>
+                        <div class="price">₹600</div>
+                        <div class="tax-note">inclusive of all taxes</div>
+                    </div>
+                    <button class="select-seats" onclick="selectSeats('Bharat Benz', 'Non AC Sleeper', '600')">Select Seats</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Function to update search summary from URL parameters
+        function updateSearchSummary() {
+            const params = new URLSearchParams(window.location.search);
+            
+            document.getElementById('fromCity').textContent = params.get('from') || 'Delhi';
+            document.getElementById('toCity').textContent = params.get('to') || 'Manali';
+            
+            const date = params.get('date') || '2024-03-30';
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('journeyDate').textContent = formattedDate;
+        }
+
+        // Function to check if a time falls within a given range
+        function isTimeInRange(time, range) {
+            if (range === 'All') return true;
+            
+            const hour = parseInt(time.split(':')[0]);
+            const isPM = time.includes('PM');
+            const adjustedHour = isPM && hour !== 12 ? hour + 12 : hour;
+            
+            switch (range) {
+                case 'Morning (6 AM - 12 PM)':
+                    return adjustedHour >= 6 && adjustedHour < 12;
+                case 'Afternoon (12 PM - 6 PM)':
+                    return adjustedHour >= 12 && adjustedHour < 18;
+                case 'Evening (6 PM - 12 AM)':
+                    return adjustedHour >= 18 || adjustedHour < 6;
+                default:
+                    return true;
+            }
+        }
+
+        // Function to filter buses
+        function filterBuses() {
+            const selectedBusType = document.querySelector('.filter-group:nth-child(1) .filter-option.active').textContent;
+            const selectedTimeRange = document.querySelector('.filter-group:nth-child(2) .filter-option.active').textContent;
+            
+            const busCards = document.querySelectorAll('.bus-card');
+            let visibleCount = 0;
+            
+            busCards.forEach(card => {
+                const busType = card.querySelector('.bus-type').textContent;
+                const departureTime = card.querySelector('.detail-value').textContent;
+                
+                const matchesBusType = selectedBusType === 'All' || busType === selectedBusType;
+                const matchesTimeRange = isTimeInRange(departureTime, selectedTimeRange);
+                
+                if (matchesBusType && matchesTimeRange) {
+                    card.style.display = 'block';
+                    visibleCount++;
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+
+            // Show/hide no results message
+            const noResultsDiv = document.getElementById('noResults');
+            if (visibleCount === 0) {
+                if (!noResultsDiv) {
+                    const noResults = document.createElement('div');
+                    noResults.id = 'noResults';
+                    noResults.className = 'no-results';
+                    noResults.innerHTML = `
+                        <h2>No buses found</h2>
+                        <p>Try adjusting your filters to see more results</p>
+                    `;
+                    document.getElementById('busResults').appendChild(noResults);
+                }
+            } else if (noResultsDiv) {
+                noResultsDiv.remove();
+            }
+        }
+
+        // Function to handle seat selection
+        function selectSeats(busName, busType, price) {
+            const params = new URLSearchParams(window.location.search);
+            params.append('busName', busName);
+            params.append('busType', busType);
+            params.append('price', price);
+            
+            // Redirect to seat selection page
+            window.location.href = `select-seats.html?${params.toString()}`;
+        }
+
+        // Filter functionality
+        document.querySelectorAll('.filter-option').forEach(option => {
+            option.addEventListener('click', function() {
+                const filterGroup = this.closest('.filter-group');
+                filterGroup.querySelectorAll('.filter-option').forEach(opt => {
+                    opt.classList.remove('active');
+                });
+                this.classList.add('active');
+                filterBuses();
+            });
+        });
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', function() {
+            updateSearchSummary();
+        });
+    </script>
+</body>
+</html> 

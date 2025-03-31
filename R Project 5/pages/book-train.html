@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Train Tickets - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .booking-container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 2rem;
+        }
+
+        .booking-header {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .booking-header h1 {
+            color: #1a365d;
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .booking-header p {
+            color: #64748b;
+            font-size: 1.1rem;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 1rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            border-color: #2563eb;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .search-btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .search-btn:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .train-results {
+            margin-top: 2rem;
+        }
+
+        .popular-routes {
+            margin-top: 4rem;
+            padding: 2rem;
+            background: #f8fafc;
+            border-radius: 1rem;
+        }
+
+        .popular-routes h2 {
+            color: #1a365d;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .route-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .route-item {
+            background: white;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .route-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .route-item h3 {
+            color: #1a365d;
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .route-item p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html" class="active">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="booking-container">
+        <div class="booking-header">
+            <h1>Book Train Tickets</h1>
+            <p>Search and book train tickets for your journey</p>
+        </div>
+
+        <form id="trainBookingForm" class="booking-form">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="train-from">From</label>
+                    <input type="text" id="train-from" name="from" placeholder="Enter departure city" required>
+                </div>
+                <div class="form-group">
+                    <label for="train-to">To</label>
+                    <input type="text" id="train-to" name="to" placeholder="Enter destination city" required>
+                </div>
+                <div class="form-group">
+                    <label for="train-date">Date of Journey</label>
+                    <input type="date" id="train-date" name="date" required>
+                </div>
+                <div class="form-group">
+                    <label for="train-class">Class</label>
+                    <select id="train-class" name="class" required>
+                        <option value="">Select Class</option>
+                        <option value="1A">First AC</option>
+                        <option value="2A">Second AC</option>
+                        <option value="3A">Third AC</option>
+                        <option value="SL">Sleeper</option>
+                        <option value="CC">Chair Car</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="train-passengers">Passengers</label>
+                    <select id="train-passengers" name="passengers" required>
+                        <option value="1">1 Passenger</option>
+                        <option value="2">2 Passengers</option>
+                        <option value="3">3 Passengers</option>
+                        <option value="4">4 Passengers</option>
+                        <option value="5">5 Passengers</option>
+                    </select>
+                </div>
+            </div>
+            <button type="submit" class="search-btn">Search Trains</button>
+        </form>
+
+        <div class="popular-routes">
+            <h2>Popular Train Routes</h2>
+            <div class="route-list">
+                <div class="route-item" onclick="fillRoute('Delhi', 'Mumbai')">
+                    <h3>Delhi → Mumbai</h3>
+                    <p>Rajdhani Express</p>
+                </div>
+                <div class="route-item" onclick="fillRoute('Bangalore', 'Chennai')">
+                    <h3>Bangalore → Chennai</h3>
+                    <p>Shatabdi Express</p>
+                </div>
+                <div class="route-item" onclick="fillRoute('Kolkata', 'Delhi')">
+                    <h3>Kolkata → Delhi</h3>
+                    <p>Duronto Express</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Fill form with route details
+        function fillRoute(from, to) {
+            document.getElementById('train-from').value = from;
+            document.getElementById('train-to').value = to;
+            // Set today's date
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('train-date').value = today;
+        }
+
+        // Handle form submission
+        document.getElementById('trainBookingForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const from = document.getElementById('train-from').value;
+            const to = document.getElementById('train-to').value;
+            const date = document.getElementById('train-date').value;
+            const trainClass = document.getElementById('train-class').value;
+            const passengers = document.getElementById('train-passengers').value;
+            
+            const searchParams = new URLSearchParams();
+            searchParams.append('from', from);
+            searchParams.append('to', to);
+            searchParams.append('date', date);
+            searchParams.append('class', trainClass);
+            searchParams.append('passengers', passengers);
+            
+            // Redirect to search results page
+            window.location.href = `train-search-results.html?${searchParams.toString()}`;
+        });
+
+        // Set minimum date as today for date input
+        const dateInput = document.getElementById('train-date');
+        const today = new Date().toISOString().split('T')[0];
+        dateInput.min = today;
+        dateInput.value = today;
+
+        // Check for pre-filled values from localStorage
+        window.addEventListener('load', () => {
+            const fromCity = localStorage.getItem('fromCity');
+            const toCity = localStorage.getItem('toCity');
+            
+            if (fromCity) document.getElementById('train-from').value = fromCity;
+            if (toCity) document.getElementById('train-to').value = toCity;
+            
+            // Clear the localStorage
+            localStorage.removeItem('fromCity');
+            localStorage.removeItem('toCity');
+        });
+    </script>
+</body>
+</html> 

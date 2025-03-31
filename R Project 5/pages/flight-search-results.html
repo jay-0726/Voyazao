@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flight Search Results - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .journey-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .journey-details i {
+            color: #2563eb;
+        }
+
+        .search-info {
+            display: flex;
+            gap: 2rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .info-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .filters {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .filter-group {
+            margin-bottom: 1rem;
+        }
+
+        .filter-group h3 {
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+            font-size: 1rem;
+        }
+
+        .filter-options {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-option {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+
+        .filter-option:hover,
+        .filter-option.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .flight-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .flight-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+            transition: all 0.3s ease;
+        }
+
+        .flight-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .flight-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .airline-details {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .airline-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .airline-logo i {
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+
+        .airline-name {
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .flight-number {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .time-details {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 1rem 0;
+            border-top: 1px solid #e2e8f0;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .departure, .arrival {
+            flex: 1;
+        }
+
+        .time {
+            font-size: 1.5rem;
+            color: #1a365d;
+            font-weight: 600;
+        }
+
+        .city {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .duration {
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            position: relative;
+        }
+
+        .duration::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: -1rem;
+            right: -1rem;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .duration span {
+            background: white;
+            padding: 0 0.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .facilities {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .facility {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .price-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding-left: 2rem;
+            border-left: 1px solid #e2e8f0;
+        }
+
+        .price-details {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 1.8rem;
+            color: #1a365d;
+            font-weight: 600;
+        }
+
+        .price-info {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .select-flight-btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+        }
+
+        .select-flight-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 1rem;
+        }
+
+        .rating i {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html" class="active">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-summary">
+            <div class="journey-details">
+                <span id="fromCity">Loading...</span>
+                <i class="fas fa-plane"></i>
+                <span id="toCity">Loading...</span>
+            </div>
+            <div class="search-info">
+                <div class="info-item">
+                    <i class="fas fa-calendar"></i>
+                    <span id="journeyDate">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-user-friends"></i>
+                    <span id="passengerInfo">Loading...</span>
+                </div>
+                <div class="info-item">
+                    <i class="fas fa-couch"></i>
+                    <span id="classType">Loading...</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-group">
+                <h3>Departure Time</h3>
+                <div class="filter-options">
+                    <div class="filter-option" onclick="filterFlights('time', 'morning')">Morning</div>
+                    <div class="filter-option" onclick="filterFlights('time', 'afternoon')">Afternoon</div>
+                    <div class="filter-option" onclick="filterFlights('time', 'evening')">Evening</div>
+                    <div class="filter-option" onclick="filterFlights('time', 'night')">Night</div>
+                </div>
+            </div>
+            <div class="filter-group">
+                <h3>Airlines</h3>
+                <div class="filter-options">
+                    <div class="filter-option" onclick="filterFlights('airline', 'indigo')">IndiGo</div>
+                    <div class="filter-option" onclick="filterFlights('airline', 'airIndia')">Air India</div>
+                    <div class="filter-option" onclick="filterFlights('airline', 'vistara')">Vistara</div>
+                    <div class="filter-option" onclick="filterFlights('airline', 'spiceJet')">SpiceJet</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="flight-cards" id="flightResults">
+            <!-- Flight cards will be added here dynamically -->
+        </div>
+    </div>
+
+    <script>
+        const flightData = {
+            'Mumbai-Delhi': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 171',
+                    departureTime: '06:00',
+                    arrivalTime: '08:10',
+                    duration: '2h 10m',
+                    price: 3999,
+                    facilities: ['Meals', 'Entertainment', 'USB Power'],
+                    rating: 4.5
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 864',
+                    departureTime: '10:30',
+                    arrivalTime: '12:45',
+                    duration: '2h 15m',
+                    price: 4599,
+                    facilities: ['Meals', 'WiFi', 'Extra Legroom'],
+                    rating: 4.2
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 975',
+                    departureTime: '15:45',
+                    arrivalTime: '18:00',
+                    duration: '2h 15m',
+                    price: 5299,
+                    facilities: ['Premium Meals', 'Entertainment', 'Lounge Access'],
+                    rating: 4.7
+                },
+                {
+                    airline: 'SpiceJet',
+                    flightNumber: 'SG 158',
+                    departureTime: '19:30',
+                    arrivalTime: '21:40',
+                    duration: '2h 10m',
+                    price: 3499,
+                    facilities: ['Meals Available', 'USB Power'],
+                    rating: 4.0
+                }
+            ],
+            'Delhi-Mumbai': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 172',
+                    departureTime: '07:00',
+                    arrivalTime: '09:10',
+                    duration: '2h 10m',
+                    price: 4199,
+                    facilities: ['Meals', 'Entertainment', 'USB Power'],
+                    rating: 4.5
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 865',
+                    departureTime: '11:30',
+                    arrivalTime: '13:45',
+                    duration: '2h 15m',
+                    price: 4799,
+                    facilities: ['Meals', 'WiFi', 'Extra Legroom'],
+                    rating: 4.2
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 976',
+                    departureTime: '16:45',
+                    arrivalTime: '19:00',
+                    duration: '2h 15m',
+                    price: 5499,
+                    facilities: ['Premium Meals', 'Entertainment', 'Lounge Access'],
+                    rating: 4.7
+                }
+            ],
+            'Bangalore-Mumbai': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 326',
+                    departureTime: '07:15',
+                    arrivalTime: '09:00',
+                    duration: '1h 45m',
+                    price: 2999,
+                    facilities: ['Meals', 'Entertainment'],
+                    rating: 4.3
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 451',
+                    departureTime: '13:30',
+                    arrivalTime: '15:15',
+                    duration: '1h 45m',
+                    price: 3899,
+                    facilities: ['Premium Meals', 'WiFi', 'Entertainment'],
+                    rating: 4.6
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 640',
+                    departureTime: '16:45',
+                    arrivalTime: '18:30',
+                    duration: '1h 45m',
+                    price: 3599,
+                    facilities: ['Meals', 'Extra Legroom'],
+                    rating: 4.1
+                }
+            ],
+            'Mumbai-Bangalore': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 327',
+                    departureTime: '08:15',
+                    arrivalTime: '10:00',
+                    duration: '1h 45m',
+                    price: 3199,
+                    facilities: ['Meals', 'Entertainment'],
+                    rating: 4.3
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 452',
+                    departureTime: '14:30',
+                    arrivalTime: '16:15',
+                    duration: '1h 45m',
+                    price: 4099,
+                    facilities: ['Premium Meals', 'WiFi', 'Entertainment'],
+                    rating: 4.6
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 641',
+                    departureTime: '17:45',
+                    arrivalTime: '19:30',
+                    duration: '1h 45m',
+                    price: 3799,
+                    facilities: ['Meals', 'Extra Legroom'],
+                    rating: 4.1
+                }
+            ],
+            'Delhi-Bangalore': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 556',
+                    departureTime: '06:30',
+                    arrivalTime: '09:15',
+                    duration: '2h 45m',
+                    price: 4499,
+                    facilities: ['Meals', 'Entertainment', 'USB Power'],
+                    rating: 4.4
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 773',
+                    departureTime: '11:00',
+                    arrivalTime: '13:45',
+                    duration: '2h 45m',
+                    price: 5299,
+                    facilities: ['Meals', 'WiFi', 'Extra Legroom'],
+                    rating: 4.3
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 811',
+                    departureTime: '15:30',
+                    arrivalTime: '18:15',
+                    duration: '2h 45m',
+                    price: 5899,
+                    facilities: ['Premium Meals', 'Entertainment', 'Lounge Access'],
+                    rating: 4.8
+                }
+            ],
+            'Bangalore-Delhi': [
+                {
+                    airline: 'IndiGo',
+                    flightNumber: '6E 557',
+                    departureTime: '07:30',
+                    arrivalTime: '10:15',
+                    duration: '2h 45m',
+                    price: 4699,
+                    facilities: ['Meals', 'Entertainment', 'USB Power'],
+                    rating: 4.4
+                },
+                {
+                    airline: 'Air India',
+                    flightNumber: 'AI 774',
+                    departureTime: '12:00',
+                    arrivalTime: '14:45',
+                    duration: '2h 45m',
+                    price: 5499,
+                    facilities: ['Meals', 'WiFi', 'Extra Legroom'],
+                    rating: 4.3
+                },
+                {
+                    airline: 'Vistara',
+                    flightNumber: 'UK 812',
+                    departureTime: '16:30',
+                    arrivalTime: '19:15',
+                    duration: '2h 45m',
+                    price: 6099,
+                    facilities: ['Premium Meals', 'Entertainment', 'Lounge Access'],
+                    rating: 4.8
+                }
+            ]
+        };
+
+        function createFlightCard(flight) {
+            return `
+                <div class="flight-card" data-flight-number="${flight.flightNumber}">
+                    <div class="flight-info">
+                        <div class="airline-details">
+                            <div class="airline-logo">
+                                <i class="fas fa-plane"></i>
+                            </div>
+                            <div>
+                                <div class="airline-name">${flight.airline}</div>
+                                <div class="flight-number">${flight.flightNumber}</div>
+                            </div>
+                        </div>
+                        <div class="time-details">
+                            <div class="departure">
+                                <div class="time">${flight.departureTime}</div>
+                                <div class="city" id="departureCity">Loading...</div>
+                            </div>
+                            <div class="duration">
+                                <span>${flight.duration}</span>
+                            </div>
+                            <div class="arrival">
+                                <div class="time">${flight.arrivalTime}</div>
+                                <div class="city" id="arrivalCity">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="facilities">
+                            ${flight.facilities.map(facility => `
+                                <div class="facility">
+                                    <i class="fas fa-check"></i>
+                                    <span>${facility}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="price-section">
+                        <div class="price-details">
+                            <div class="price">₹${flight.price}</div>
+                            <div class="price-info">per passenger</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>${flight.rating}/5</span>
+                            </div>
+                        </div>
+                        <button class="select-flight-btn" onclick="selectFlight('${flight.flightNumber}', ${flight.price})">
+                            Select Flight
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function selectFlight(flightNumber, price) {
+            const params = new URLSearchParams(window.location.search);
+            const airline = document.querySelector(`[data-flight-number="${flightNumber}"]`).closest('.flight-card').querySelector('.airline-name').textContent;
+            const departureTime = document.querySelector(`[data-flight-number="${flightNumber}"]`).closest('.flight-card').querySelector('.departure .time').textContent;
+            const arrivalTime = document.querySelector(`[data-flight-number="${flightNumber}"]`).closest('.flight-card').querySelector('.arrival .time').textContent;
+            
+            params.append('flightNumber', flightNumber);
+            params.append('price', price);
+            params.append('airline', airline);
+            params.append('departureTime', departureTime);
+            params.append('arrivalTime', arrivalTime);
+            
+            window.location.href = `flight-seat-selection.html?${params.toString()}`;
+        }
+
+        // Add these time range definitions at the top of the script
+        const timeRanges = {
+            morning: { start: '04:00', end: '11:59' },
+            afternoon: { start: '12:00', end: '16:59' },
+            evening: { start: '17:00', end: '20:59' },
+            night: { start: '21:00', end: '03:59' }
+        };
+
+        // Add active filters object to track selected filters
+        let activeFilters = {
+            time: new Set(),
+            airline: new Set()
+        };
+
+        function isTimeInRange(flightTime, range) {
+            const time = parseInt(flightTime.split(':').join(''));
+            const start = parseInt(timeRanges[range].start.split(':').join(''));
+            const end = parseInt(timeRanges[range].end.split(':').join(''));
+            
+            if (range === 'night' && time >= 0 && time <= 359) {
+                return true;
+            }
+            
+            return time >= start && time <= end;
+        }
+
+        function filterFlights(type, value) {
+            // Toggle filter option active state
+            const options = document.querySelectorAll(`.filter-options .filter-option`);
+            options.forEach(option => {
+                if (option.textContent.toLowerCase() === value.toLowerCase()) {
+                    option.classList.toggle('active');
+                    if (option.classList.contains('active')) {
+                        activeFilters[type].add(value.toLowerCase());
+                    } else {
+                        activeFilters[type].delete(value.toLowerCase());
+                    }
+                }
+            });
+
+            // Get current route from URL
+            const params = new URLSearchParams(window.location.search);
+            const from = params.get('from');
+            const to = params.get('to');
+            
+            // Get all flights for the route
+            let flights = searchFlights(from, to);
+            
+            // Apply filters
+            if (activeFilters.time.size > 0 || activeFilters.airline.size > 0) {
+                flights = flights.filter(flight => {
+                    // Time filter
+                    const timeMatch = activeFilters.time.size === 0 || Array.from(activeFilters.time).some(timeRange => 
+                        isTimeInRange(flight.departureTime, timeRange)
+                    );
+                    
+                    // Airline filter
+                    const airlineMatch = activeFilters.airline.size === 0 || Array.from(activeFilters.airline).some(airline => 
+                        flight.airline.toLowerCase().includes(airline.toLowerCase())
+                    );
+                    
+                    return timeMatch && airlineMatch;
+                });
+            }
+
+            // Update display
+            const resultsContainer = document.getElementById('flightResults');
+            if (flights.length > 0) {
+                resultsContainer.innerHTML = '';
+                flights.forEach(flight => {
+                    resultsContainer.innerHTML += createFlightCard(flight);
+                });
+
+                // Update city names in flight cards
+                const departureElements = document.querySelectorAll('#departureCity');
+                departureElements.forEach(el => el.textContent = from);
+                const arrivalElements = document.querySelectorAll('#arrivalCity');
+                arrivalElements.forEach(el => el.textContent = to);
+            } else {
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                        No flights found matching the selected filters. Try different filter options.
+                    </div>
+                `;
+            }
+        }
+
+        function searchFlights(from, to) {
+            const routeKey = `${from}-${to}`;
+            const reverseRouteKey = `${to}-${from}`;
+            return flightData[routeKey] || flightData[reverseRouteKey] || [];
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const from = params.get('from');
+            const to = params.get('to');
+            const date = params.get('departDate');
+            const classType = params.get('class');
+            const adults = params.get('adults') || '1';
+            const children = params.get('children') || '0';
+            const infants = params.get('infants') || '0';
+
+            // Update search summary
+            document.getElementById('fromCity').textContent = from;
+            document.getElementById('toCity').textContent = to;
+            document.getElementById('journeyDate').textContent = new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            document.getElementById('passengerInfo').textContent = `${adults} Adult${adults > 1 ? 's' : ''}${children > 0 ? `, ${children} Child${children > 1 ? 'ren' : ''}` : ''}${infants > 0 ? `, ${infants} Infant${infants > 1 ? 's' : ''}` : ''}`;
+            document.getElementById('classType').textContent = classType.charAt(0).toUpperCase() + classType.slice(1);
+
+            // Display flight results
+            const resultsContainer = document.getElementById('flightResults');
+            const flights = searchFlights(from, to);
+            
+            if (flights.length > 0) {
+                flights.forEach(flight => {
+                    resultsContainer.innerHTML += createFlightCard(flight);
+                });
+
+                // Update city names in flight cards
+                const departureElements = document.querySelectorAll('#departureCity');
+                departureElements.forEach(el => el.textContent = from);
+                const arrivalElements = document.querySelectorAll('#arrivalCity');
+                arrivalElements.forEach(el => el.textContent = to);
+            } else {
+                resultsContainer.innerHTML = `
+                    <div style="text-align: center; padding: 2rem; color: #64748b;">
+                        No flights found for this route. Please try different dates or cities.
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .payment-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .payment-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-section {
+            margin-bottom: 2rem;
+        }
+
+        .form-section h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .card-details {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .booking-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .booking-summary h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+            font-size: 1.5rem;
+        }
+
+        .flight-details {
+            margin-bottom: 1.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .detail-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 0.5rem;
+            color: #64748b;
+        }
+
+        .detail-item.total {
+            color: #1a365d;
+            font-weight: 600;
+            font-size: 1.2rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .selected-seats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .seat-tag {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .pay-btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            width: 100%;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .pay-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .payment-methods {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .payment-method {
+            flex: 1;
+            padding: 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover,
+        .payment-method.active {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .payment-method i {
+            font-size: 1.5rem;
+            color: #2563eb;
+            margin-bottom: 0.5rem;
+        }
+
+        .payment-method span {
+            display: block;
+            color: #1a365d;
+            font-size: 0.9rem;
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .route-info i {
+            color: #2563eb;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html" class="active">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="payment-container">
+            <div class="payment-form">
+                <div class="form-section">
+                    <h2>Payment Details</h2>
+                    <div class="payment-methods">
+                        <div class="payment-method active" onclick="selectPaymentMethod(this, 'card')">
+                            <i class="fas fa-credit-card"></i>
+                            <span>Credit/Debit Card</span>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'upi')">
+                            <i class="fas fa-mobile-alt"></i>
+                            <span>UPI</span>
+                        </div>
+                        <div class="payment-method" onclick="selectPaymentMethod(this, 'netbanking')">
+                            <i class="fas fa-university"></i>
+                            <span>Net Banking</span>
+                        </div>
+                    </div>
+
+                    <div id="cardPaymentForm">
+                        <div class="form-group">
+                            <label for="cardName">Name on Card</label>
+                            <input type="text" id="cardName" placeholder="Enter name as on card" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" maxlength="19" required>
+                        </div>
+                        <div class="card-details">
+                            <div class="form-group">
+                                <label for="expiryDate">Expiry Date</label>
+                                <input type="text" id="expiryDate" placeholder="MM/YY" maxlength="5" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="cvv">CVV</label>
+                                <input type="password" id="cvv" placeholder="123" maxlength="3" required>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div id="upiPaymentForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="upiId">UPI ID</label>
+                            <input type="text" id="upiId" placeholder="username@upi" required>
+                        </div>
+                    </div>
+
+                    <div id="netbankingForm" style="display: none;">
+                        <div class="form-group">
+                            <label for="bank">Select Bank</label>
+                            <select id="bank" class="form-control">
+                                <option value="">Select your bank</option>
+                                <option value="sbi">State Bank of India</option>
+                                <option value="hdfc">HDFC Bank</option>
+                                <option value="icici">ICICI Bank</option>
+                                <option value="axis">Axis Bank</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h2>Contact Details</h2>
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" placeholder="Enter your email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone Number</label>
+                        <input type="tel" id="phone" placeholder="Enter your phone number" required>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <h2>Booking Summary</h2>
+                <div class="flight-details">
+                    <div class="route-info">
+                        <span id="fromCity">Loading...</span>
+                        <i class="fas fa-plane"></i>
+                        <span id="toCity">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Flight</span>
+                        <span id="flightInfo">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Date</span>
+                        <span id="journeyDate">Loading...</span>
+                    </div>
+                    <div class="detail-item">
+                        <span>Time</span>
+                        <span id="journeyTime">Loading...</span>
+                    </div>
+                </div>
+
+                <div class="detail-item">
+                    <span>Selected Seats:</span>
+                    <span id="seatCount">Loading...</span>
+                </div>
+                <div class="selected-seats" id="selectedSeats">
+                    <!-- Selected seats will be shown here -->
+                </div>
+
+                <div class="detail-item">
+                    <span>Base Fare</span>
+                    <span id="baseFare">₹0</span>
+                </div>
+                <div class="detail-item">
+                    <span>Seat Charges</span>
+                    <span id="seatCharges">₹0</span>
+                </div>
+                <div class="detail-item">
+                    <span>Taxes & Fees</span>
+                    <span id="taxes">₹0</span>
+                </div>
+                <div class="detail-item total">
+                    <span>Total Amount</span>
+                    <span id="totalAmount">₹0</span>
+                </div>
+
+                <button class="pay-btn" onclick="processPayment()">Pay Now</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function selectPaymentMethod(element, method) {
+            // Remove active class from all methods
+            document.querySelectorAll('.payment-method').forEach(el => el.classList.remove('active'));
+            // Add active class to selected method
+            element.classList.add('active');
+
+            // Hide all payment forms
+            document.getElementById('cardPaymentForm').style.display = 'none';
+            document.getElementById('upiPaymentForm').style.display = 'none';
+            document.getElementById('netbankingForm').style.display = 'none';
+
+            // Show selected payment form
+            if (method === 'card') {
+                document.getElementById('cardPaymentForm').style.display = 'block';
+            } else if (method === 'upi') {
+                document.getElementById('upiPaymentForm').style.display = 'block';
+            } else if (method === 'netbanking') {
+                document.getElementById('netbankingForm').style.display = 'block';
+            }
+        }
+
+        function formatCardNumber(input) {
+            let value = input.value.replace(/\D/g, '');
+            let formattedValue = '';
+            for (let i = 0; i < value.length; i++) {
+                if (i > 0 && i % 4 === 0) {
+                    formattedValue += ' ';
+                }
+                formattedValue += value[i];
+            }
+            input.value = formattedValue;
+        }
+
+        function formatExpiryDate(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length >= 2) {
+                value = value.slice(0, 2) + '/' + value.slice(2);
+            }
+            input.value = value;
+        }
+
+        document.getElementById('cardNumber').addEventListener('input', function() {
+            formatCardNumber(this);
+        });
+
+        document.getElementById('expiryDate').addEventListener('input', function() {
+            formatExpiryDate(this);
+        });
+
+        function processPayment() {
+            // Here you would normally handle the payment processing
+            // For demo purposes, we'll just show a success message and redirect
+            alert('Payment successful! Your flight has been booked.');
+            window.location.href = 'booking-confirmation.html?' + window.location.search;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Update flight details
+            document.getElementById('fromCity').textContent = params.get('from') || '';
+            document.getElementById('toCity').textContent = params.get('to') || '';
+            document.getElementById('flightInfo').textContent = `${params.get('airline')} ${params.get('flightNumber')}`;
+            
+            const date = params.get('departDate');
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            document.getElementById('journeyDate').textContent = formattedDate;
+            document.getElementById('journeyTime').textContent = `${params.get('departureTime')} - ${params.get('arrivalTime')}`;
+
+            // Update seat and price information
+            const selectedSeats = params.get('selectedSeats').split(',');
+            document.getElementById('seatCount').textContent = selectedSeats.length;
+            
+            const selectedSeatsContainer = document.getElementById('selectedSeats');
+            selectedSeatsContainer.innerHTML = selectedSeats
+                .map(seat => `<div class="seat-tag">${seat}</div>`)
+                .join('');
+
+            const basePrice = parseInt(params.get('price')) || 0;
+            const seatCharges = parseInt(params.get('seatCharges')) || 0;
+            const taxes = Math.round((basePrice + seatCharges) * 0.05);
+            const total = basePrice + seatCharges + taxes;
+
+            document.getElementById('baseFare').textContent = `₹${basePrice}`;
+            document.getElementById('seatCharges').textContent = `₹${seatCharges}`;
+            document.getElementById('taxes').textContent = `₹${taxes}`;
+            document.getElementById('totalAmount').textContent = `₹${total}`;
+        });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fixed Bus Booking Form</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        h1 {
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .subtitle {
+            color: #7f8c8d;
+            margin-bottom: 30px;
+        }
+        
+        /* Form Styles */
+        .form-container {
+            background-color: #f8f8f8;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 30px;
+        }
+        
+        .form-row {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 0 -10px;
+        }
+        
+        .form-group {
+            flex: 1;
+            min-width: 250px;
+            padding: 0 10px;
+            margin-bottom: 20px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #34495e;
+        }
+        
+        /* Critical Select Styles */
+        select {
+            display: inline-block;
+            width: 100%;
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 16px;
+            font-family: inherit;
+            line-height: 1.5;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            transition: border-color 0.15s ease-in-out;
+            cursor: pointer;
+        }
+        
+        /* Ensure cross-browser compatibility */
+        select {
+            -webkit-appearance: menulist !important;
+            -moz-appearance: menulist !important;
+            appearance: menulist !important;
+        }
+        
+        select:focus {
+            border-color: #3498db;
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+        
+        .button {
+            display: inline-block;
+            background-color: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 16px;
+            font-weight: 600;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+        
+        .button:hover {
+            background-color: #2980b9;
+        }
+        
+        input[type="date"] {
+            display: block;
+            width: 100%;
+            height: 40px;
+            padding: 8px 12px;
+            font-size: 16px;
+            line-height: 1.5;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        
+        input[type="date"]:focus {
+            border-color: #3498db;
+            outline: 0;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.25);
+        }
+        
+        /* Debug section */
+        .debug-section {
+            margin-top: 30px;
+            padding: 15px;
+            background-color: #f1f1f1;
+            border-radius: 6px;
+        }
+        
+        .debug-heading {
+            margin-top: 0;
+            color: #333;
+        }
+        
+        .debug-button {
+            background-color: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            margin-top: 10px;
+        }
+        
+        .debug-button:hover {
+            background-color: #7f8c8d;
+        }
+        
+        .debug-output {
+            margin-top: 15px;
+            padding: 10px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-family: monospace;
+            white-space: pre-wrap;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Indian Bus Routes</h1>
+        <p class="subtitle">Discover comfortable and affordable bus travel options connecting major cities across India</p>
+        
+        <div class="form-container">
+            <form id="bus-booking-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="from">From</label>
+                        <select id="from" name="from">
+                            <option value="" disabled selected>Select Departure City</option>
+                            <option value="delhi">Delhi</option>
+                            <option value="bangalore">Bangalore</option>
+                            <option value="chennai">Chennai</option>
+                            <option value="mumbai">Mumbai</option>
+                            <option value="kolkata">Kolkata</option>
+                            <option value="hyderabad">Hyderabad</option>
+                            <option value="pune">Pune</option>
+                            <option value="jaipur">Jaipur</option>
+                            <option value="ahmedabad">Ahmedabad</option>
+                            <option value="kochi">Kochi</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="to">To</label>
+                        <select id="to" name="to">
+                            <option value="" disabled selected>Select Destination City</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="date">Departure Date</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="passengers">Passengers</label>
+                        <select id="passengers" name="passengers">
+                            <option value="1">1 Passenger</option>
+                            <option value="2">2 Passengers</option>
+                            <option value="3">3 Passengers</option>
+                            <option value="4">4 Passengers</option>
+                            <option value="5">5 Passengers</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <button type="submit" class="button">Search Buses</button>
+            </form>
+        </div>
+        
+        <div class="debug-section">
+            <h3 class="debug-heading">Debug Tools</h3>
+            <button id="debug-button" class="debug-button">Check Dropdown State</button>
+            <button id="reinitialize-button" class="debug-button">Reinitialize Dropdowns</button>
+            <div id="debug-output" class="debug-output">Debug information will appear here...</div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Bus routes data
+            const busRoutes = {
+                'delhi': ['Mumbai', 'Bangalore', 'Chennai', 'Kolkata', 'Jaipur', 'Chandigarh', 'Manali', 'Udaipur', 'Goa', 'Pune'],
+                'bangalore': ['Delhi', 'Mumbai', 'Chennai', 'Hyderabad', 'Mysore', 'Coimbatore', 'Goa', 'Pune', 'Udaipur', 'Manali'],
+                'chennai': ['Bangalore', 'Hyderabad', 'Mumbai', 'Delhi', 'Pondicherry', 'Coimbatore', 'Madurai', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'mumbai': ['Pune', 'Goa', 'Bangalore', 'Ahmedabad', 'Delhi', 'Udaipur', 'Nashik', 'Surat', 'Kolkata', 'Manali'],
+                'kolkata': ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Bhubaneswar', 'Patna', 'Siliguri', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'hyderabad': ['Bangalore', 'Chennai', 'Mumbai', 'Vijayawada', 'Tirupati', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'pune': ['Mumbai', 'Bangalore', 'Goa', 'Nashik', 'Kolhapur', 'Delhi', 'Udaipur', 'Manali'],
+                'jaipur': ['Delhi', 'Udaipur', 'Jodhpur', 'Ajmer', 'Mumbai', 'Bangalore', 'Goa', 'Pune', 'Manali'],
+                'ahmedabad': ['Mumbai', 'Pune', 'Udaipur', 'Jaipur', 'Delhi', 'Goa', 'Manali'],
+                'kochi': ['Bangalore', 'Chennai', 'Coimbatore', 'Mangalore', 'Munnar', 'Udaipur', 'Goa', 'Pune', 'Manali']
+            };
+            
+            // Elements
+            const fromSelect = document.getElementById('from');
+            const toSelect = document.getElementById('to');
+            const dateInput = document.getElementById('date');
+            const debugButton = document.getElementById('debug-button');
+            const reinitializeButton = document.getElementById('reinitialize-button');
+            const debugOutput = document.getElementById('debug-output');
+            const form = document.getElementById('bus-booking-form');
+            
+            // Set today as the minimum date
+            const today = new Date().toISOString().split('T')[0];
+            dateInput.setAttribute('min', today);
+            dateInput.value = today;
+            
+            // Initialize "To" dropdown based on selected city
+            function updateDestinations() {
+                const fromCity = fromSelect.value;
+                
+                // Clear previous options
+                toSelect.innerHTML = '';
+                
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Destination City';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                toSelect.appendChild(defaultOption);
+                
+                // If no city is selected, exit
+                if (!fromCity) {
+                    debugOutput.textContent = 'No departure city selected';
+                    return;
+                }
+                
+                // Get destinations for selected city
+                const destinations = busRoutes[fromCity] || [];
+                
+                // Prioritize specific destinations
+                const priorityDestinations = ['Udaipur', 'Goa', 'Pune', 'Manali'];
+                
+                // Sort destinations by priority
+                const sortedDestinations = [...destinations].sort((a, b) => {
+                    const aIndex = priorityDestinations.indexOf(a);
+                    const bIndex = priorityDestinations.indexOf(b);
+                    
+                    if (aIndex !== -1 && bIndex !== -1) {
+                        return aIndex - bIndex;
+                    }
+                    if (aIndex !== -1) {
+                        return -1;
+                    }
+                    if (bIndex !== -1) {
+                        return 1;
+                    }
+                    return a.localeCompare(b);
+                });
+                
+                // Add destination options
+                sortedDestinations.forEach(destination => {
+                    const option = document.createElement('option');
+                    option.value = destination.toLowerCase();
+                    option.textContent = destination;
+                    toSelect.appendChild(option);
+                });
+                
+                debugOutput.textContent = `Updated destinations for ${fromCity}: ${sortedDestinations.join(', ')}`;
+            }
+            
+            // Debug function to check dropdown state
+            function checkDropdownState() {
+                let output = '--- DROPDOWN STATE ---\n';
+                
+                if (fromSelect) {
+                    output += `From Select: ${fromSelect.options.length} options\n`;
+                    output += `Selected: ${fromSelect.value || 'none'}\n`;
+                    output += `Display: ${getComputedStyle(fromSelect).display}\n`;
+                    output += `Visibility: ${getComputedStyle(fromSelect).visibility}\n\n`;
+                    
+                    output += 'From Options:\n';
+                    for (let i = 0; i < fromSelect.options.length; i++) {
+                        const opt = fromSelect.options[i];
+                        output += `  ${i}: ${opt.value} - ${opt.text}\n`;
+                    }
+                    output += '\n';
+                } else {
+                    output += 'From Select: Not found\n\n';
+                }
+                
+                if (toSelect) {
+                    output += `To Select: ${toSelect.options.length} options\n`;
+                    output += `Selected: ${toSelect.value || 'none'}\n`;
+                    output += `Display: ${getComputedStyle(toSelect).display}\n`;
+                    output += `Visibility: ${getComputedStyle(toSelect).visibility}\n\n`;
+                    
+                    output += 'To Options:\n';
+                    for (let i = 0; i < toSelect.options.length; i++) {
+                        const opt = toSelect.options[i];
+                        output += `  ${i}: ${opt.value} - ${opt.text}\n`;
+                    }
+                } else {
+                    output += 'To Select: Not found\n';
+                }
+                
+                debugOutput.textContent = output;
+            }
+            
+            // Event Listeners
+            fromSelect.addEventListener('change', updateDestinations);
+            
+            debugButton.addEventListener('click', checkDropdownState);
+            
+            reinitializeButton.addEventListener('click', function() {
+                // Force direct styles on select elements
+                [fromSelect, toSelect].forEach(select => {
+                    if (select) {
+                        select.style.display = 'block';
+                        select.style.visibility = 'visible';
+                        select.style.opacity = '1';
+                        select.style.appearance = 'menulist';
+                        select.style.webkitAppearance = 'menulist';
+                        select.style.mozAppearance = 'menulist';
+                    }
+                });
+                
+                updateDestinations();
+                checkDropdownState();
+            });
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const fromCity = fromSelect.value;
+                const toCity = toSelect.value;
+                const travelDate = dateInput.value;
+                const numPassengers = document.getElementById('passengers').value;
+                
+                if (!fromCity || !toCity) {
+                    debugOutput.textContent = 'Please select both departure and destination cities';
+                    return;
+                }
+                
+                const message = `Search submitted:
+From: ${fromCity}
+To: ${toCity}
+Date: ${travelDate}
+Passengers: ${numPassengers}`;
+                
+                debugOutput.textContent = message;
+                
+                // In a real app, you would submit the form or redirect to search results
+            });
+            
+            // Initial dropdown check
+            setTimeout(checkDropdownState, 500);
+        });
+    </script>
+</body>
+</html> 

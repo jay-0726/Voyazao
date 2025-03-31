@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Attraction Details - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/attractions.css">
+    <link rel="stylesheet" href="../css/attraction-details.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1><a href="../index.html">TravelEase</a></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-ticket-alt"></i> Book Tickets <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-content">
+                        <li><a href="bus.html"><i class="fas fa-bus"></i> Bus</a></li>
+                        <li><a href="train.html"><i class="fas fa-train"></i> Train</a></li>
+                        <li><a href="flights.html"><i class="fas fa-plane"></i> Flights</a></li>
+                        <li><a href="cabs.html"><i class="fas fa-taxi"></i> Cabs</a></li>
+                    </ul>
+                </li>
+                <li><a href="customize-trip.html"><i class="fas fa-route"></i> Customize Trip</a></li>
+                <li><a href="attractions.html"><i class="fas fa-landmark"></i> Top Attractions</a></li>
+                <li><a href="ai-planner.html"><i class="fas fa-robot"></i> AI Trip Planner</a></li>
+                <li><a href="contact.html"><i class="fas fa-envelope"></i> Contact Us</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fas fa-user"></i> Login/Sign Up</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <main class="attraction-details-container">
+        <div class="back-btn">
+            <a href="attractions.html"><i class="fas fa-arrow-left"></i> Back to Attractions</a>
+        </div>
+        
+        <div id="attraction-details-content">
+            <div class="loading">
+                <i class="fas fa-spinner fa-spin"></i>
+                <p>Loading attraction details...</p>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TravelEase</h3>
+                <p>Your one-stop solution for all travel needs. Book tickets, plan trips, and discover amazing destinations.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="bus.html">Book Bus</a></li>
+                    <li><a href="train.html">Book Train</a></li>
+                    <li><a href="flights.html">Book Flights</a></li>
+                    <li><a href="cabs.html">Book Cabs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get special offers and travel tips</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 TravelEase. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/attraction-details.js"></script>
+</body>
+</html> 

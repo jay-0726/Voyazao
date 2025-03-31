@@ -1,0 +1,507 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Train Seats - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .train-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .train-details {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .train-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .train-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .train-logo i {
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .route-info i {
+            color: #2563eb;
+        }
+
+        .seat-selection-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        .seat-map {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .coach-selector {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .coach-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .coach-btn:hover,
+        .coach-btn.active {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .berth-map {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .berth {
+            aspect-ratio: 1;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            background: white;
+        }
+
+        .berth:hover:not(.occupied) {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .berth.selected {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .berth.occupied {
+            background: #e2e8f0;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
+
+        .berth-number {
+            font-size: 0.9rem;
+            position: absolute;
+            top: 0.25rem;
+            left: 0.25rem;
+        }
+
+        .berth-type {
+            font-size: 0.8rem;
+            color: #64748b;
+        }
+
+        .legend {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .legend-box {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.25rem;
+        }
+
+        .legend-box.selected {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .legend-box.occupied {
+            background: #e2e8f0;
+        }
+
+        .booking-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .booking-summary h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #64748b;
+        }
+
+        .selected-seats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .seat-tag {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .price-breakdown {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            color: #1a365d;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .proceed-btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            width: 100%;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .proceed-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .proceed-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html" class="active">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="train-summary">
+            <div class="train-details">
+                <div class="train-info">
+                    <div class="train-logo">
+                        <i class="fas fa-train"></i>
+                    </div>
+                    <div>
+                        <div id="trainName">Loading...</div>
+                        <div id="trainNumber">Loading...</div>
+                    </div>
+                </div>
+                <div class="route-info">
+                    <span id="fromCity">Loading...</span>
+                    <i class="fas fa-arrow-right"></i>
+                    <span id="toCity">Loading...</span>
+                </div>
+            </div>
+            <div id="journeyInfo">Loading...</div>
+        </div>
+
+        <div class="seat-selection-container">
+            <div class="seat-map">
+                <h2>Select Your Seats</h2>
+                <div class="coach-selector" id="coachSelector">
+                    <!-- Coach buttons will be generated here -->
+                </div>
+                <div class="berth-map" id="berthMap">
+                    <!-- Berth layout will be generated here -->
+                </div>
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-box"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box selected"></div>
+                        <span>Selected</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-box occupied"></div>
+                        <span>Occupied</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <h2>Booking Summary</h2>
+                <div class="summary-item">
+                    <span>Selected Seats:</span>
+                    <span id="seatCount">0</span>
+                </div>
+                <div class="selected-seats" id="selectedSeats">
+                    <!-- Selected seats will be shown here -->
+                </div>
+                <div class="price-breakdown">
+                    <div class="summary-item">
+                        <span>Base Fare:</span>
+                        <span id="baseFare">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Convenience Fee:</span>
+                        <span id="convenienceFee">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>GST:</span>
+                        <span id="gst">₹0</span>
+                    </div>
+                </div>
+                <div class="total-price">
+                    <div class="summary-item">
+                        <span>Total Amount:</span>
+                        <span id="totalAmount">₹0</span>
+                    </div>
+                </div>
+                <button class="proceed-btn" id="proceedBtn" disabled onclick="proceedToPayment()">
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedSeats = new Set();
+        let basePrice = 0;
+        let requiredSeats = 1;
+        let currentCoach = 'A1';
+
+        const berthTypes = {
+            'LB': 'Lower Berth',
+            'MB': 'Middle Berth',
+            'UB': 'Upper Berth',
+            'SL': 'Side Lower',
+            'SM': 'Side Middle',
+            'SU': 'Side Upper'
+        };
+
+        function generateCoaches(trainClass) {
+            const coachCount = trainClass === '1A' ? 2 : trainClass === '2A' ? 3 : 4;
+            const coachSelector = document.getElementById('coachSelector');
+            coachSelector.innerHTML = '';
+
+            for (let i = 1; i <= coachCount; i++) {
+                const coach = `${trainClass}${i}`;
+                const button = document.createElement('button');
+                button.className = `coach-btn ${i === 1 ? 'active' : ''}`;
+                button.textContent = coach;
+                button.onclick = () => selectCoach(coach);
+                coachSelector.appendChild(button);
+            }
+        }
+
+        function generateBerthLayout() {
+            const berthMap = document.getElementById('berthMap');
+            berthMap.innerHTML = '';
+
+            const totalBerths = 72;
+            for (let i = 1; i <= totalBerths; i++) {
+                const berth = document.createElement('div');
+                berth.className = 'berth';
+                if (Math.random() < 0.3) berth.classList.add('occupied');
+
+                const berthType = getBerthType(i);
+                berth.innerHTML = `
+                    <span class="berth-number">${i}</span>
+                    <span class="berth-type">${berthType}</span>
+                `;
+                
+                if (!berth.classList.contains('occupied')) {
+                    berth.onclick = () => toggleBerth(berth, i, berthType);
+                }
+                
+                berthMap.appendChild(berth);
+            }
+        }
+
+        function getBerthType(number) {
+            const position = (number - 1) % 8;
+            if (position < 3) return ['LB', 'MB', 'UB'][position];
+            if (position < 6) return ['LB', 'MB', 'UB'][position - 3];
+            return ['SL', 'SU'][position - 6];
+        }
+
+        function selectCoach(coach) {
+            document.querySelectorAll('.coach-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent === coach);
+            });
+            currentCoach = coach;
+            generateBerthLayout();
+            selectedSeats.clear();
+            updateBookingSummary();
+        }
+
+        function toggleBerth(berth, number, type) {
+            if (berth.classList.contains('occupied')) return;
+
+            if (berth.classList.contains('selected')) {
+                berth.classList.remove('selected');
+                selectedSeats.delete(`${currentCoach}-${number}`);
+            } else if (selectedSeats.size < requiredSeats) {
+                berth.classList.add('selected');
+                selectedSeats.add(`${currentCoach}-${number}`);
+            } else {
+                alert(`You can only select ${requiredSeats} seat(s).`);
+                return;
+            }
+
+            updateBookingSummary();
+        }
+
+        function updateBookingSummary() {
+            const seatCount = selectedSeats.size;
+            document.getElementById('seatCount').textContent = seatCount;
+
+            const selectedSeatsContainer = document.getElementById('selectedSeats');
+            selectedSeatsContainer.innerHTML = Array.from(selectedSeats)
+                .map(seat => `<div class="seat-tag">${seat}</div>`)
+                .join('');
+
+            const baseFare = basePrice * seatCount;
+            const convenienceFee = Math.round(baseFare * 0.02); // 2% convenience fee
+            const gst = Math.round((baseFare + convenienceFee) * 0.05); // 5% GST
+            const total = baseFare + convenienceFee + gst;
+
+            document.getElementById('baseFare').textContent = `₹${baseFare}`;
+            document.getElementById('convenienceFee').textContent = `₹${convenienceFee}`;
+            document.getElementById('gst').textContent = `₹${gst}`;
+            document.getElementById('totalAmount').textContent = `₹${total}`;
+
+            document.getElementById('proceedBtn').disabled = seatCount === 0;
+        }
+
+        function proceedToPayment() {
+            const params = new URLSearchParams(window.location.search);
+            params.append('selectedSeats', Array.from(selectedSeats).join(','));
+            window.location.href = `train-payment.html?${params.toString()}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Update train details
+            document.getElementById('trainName').textContent = params.get('trainName');
+            document.getElementById('trainNumber').textContent = params.get('trainNumber');
+            document.getElementById('fromCity').textContent = params.get('from');
+            document.getElementById('toCity').textContent = params.get('to');
+            
+            const date = params.get('date');
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            
+            document.getElementById('journeyInfo').textContent = 
+                `${formattedDate} • ${params.get('departureTime')} - ${params.get('arrivalTime')} • ${params.get('duration')}`;
+            
+            // Set base price and required seats
+            basePrice = parseInt(params.get('price')) || 0;
+            requiredSeats = parseInt(params.get('passengers')) || 1;
+            
+            // Generate coach layout
+            const trainClass = params.get('class');
+            generateCoaches(trainClass);
+            generateBerthLayout();
+        });
+    </script>
+</body>
+</html> 

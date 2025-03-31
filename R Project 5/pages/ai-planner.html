@@ -1,0 +1,1027 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Trip Planner - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/customize-trip.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <!-- Favicon using Font Awesome icon via data URI -->
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✈️</text></svg>">
+    <style>
+        :root {
+            --primary-color: #22c55e;
+            --secondary-color: #0891b2;
+            --accent-color: #f59e0b;
+            --dark-color: #0f172a;
+            --light-color: #f8fafc;
+            --card-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            --transition-normal: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --transition-bounce: all 0.5s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+        }
+
+        body {
+            background: linear-gradient(135deg, #f0f8ff, #e6f7ff, #f0f8ff);
+            background-attachment: fixed;
+            color: var(--dark-color);
+            font-family: 'Poppins', sans-serif;
+            transition: var(--transition-normal);
+        }
+
+        .page-banner {
+            background: linear-gradient(120deg, #22c55e, #0891b2);
+            color: white;
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            border-radius: 0 0 50% 50% / 20px;
+            box-shadow: var(--card-shadow);
+            margin-bottom: 3rem;
+            overflow: hidden;
+        }
+        
+        .page-banner::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://img.freepik.com/free-vector/abstract-background-with-squares_23-2148995948.jpg');
+            background-size: cover;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .page-banner .banner-content {
+            max-width: 800px;
+            margin: 0 auto;
+            z-index: 2;
+            position: relative;
+            animation: fadeInUp 0.8s ease;
+        }
+        
+        .page-banner h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            position: relative;
+        }
+        
+        .page-banner h1::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 4px;
+            background: var(--accent-color);
+            border-radius: 2px;
+        }
+        
+        .page-banner p {
+            font-size: 1.2rem;
+            opacity: 0.95;
+            max-width: 600px;
+            margin: 1.5rem auto 0;
+            line-height: 1.6;
+        }
+
+        .ai-planner-container {
+            max-width: 1200px;
+            margin: 0 auto 3rem;
+            padding: 2.5rem;
+            background: white;
+            border-radius: 16px;
+            box-shadow: var(--card-shadow);
+            transform: translateY(0);
+            transition: var(--transition-normal);
+            position: relative;
+            z-index: 1;
+        }
+
+        .ai-planner-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .ai-form {
+            display: grid;
+            gap: 2.5rem;
+            animation: fadeIn 0.6s ease-out;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: var(--transition-normal);
+        }
+
+        .form-group:hover {
+            transform: translateY(-3px);
+        }
+
+        .form-group label {
+            font-weight: 600;
+            color: var(--secondary-color);
+            font-size: 1.1rem;
+            transition: var(--transition-normal);
+        }
+
+        .form-group:hover label {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        input[type="text"], 
+        input[type="number"], 
+        select, 
+        textarea {
+            padding: 1rem;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: var(--transition-normal);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        input[type="text"]:focus, 
+        input[type="number"]:focus, 
+        select:focus, 
+        textarea:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+            transform: scale(1.02);
+        }
+
+        .interest-checkboxes,
+        .requirements-checkboxes {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 1rem;
+            padding: 1rem;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px dashed #e2e8f0;
+            transition: var(--transition-normal);
+        }
+
+        .interest-checkboxes:hover,
+        .requirements-checkboxes:hover {
+            background: #f0f7ff;
+            border-color: #cbd5e1;
+        }
+
+        .interest-item,
+        .requirement-item {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            transition: var(--transition-normal);
+            padding: 0.6rem;
+            border-radius: 8px;
+        }
+
+        .interest-item:hover,
+        .requirement-item:hover {
+            background: white;
+            transform: translateX(5px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            position: relative;
+            border-radius: 4px;
+            transition: var(--transition-bounce);
+        }
+
+        input[type="checkbox"]:checked {
+            transform: scale(1.2);
+        }
+
+        input[type="checkbox"]:checked + label {
+            color: var(--primary-color);
+            font-weight: 600;
+            transform: translateX(3px);
+        }
+
+        .submit-btn {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            justify-self: center;
+            width: 100%;
+            max-width: 350px;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(9, 144, 178, 0.3);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 10px 25px rgba(9, 144, 178, 0.4);
+        }
+        
+        .submit-btn:active {
+            transform: translateY(2px);
+            box-shadow: 0 3px 10px rgba(9, 144, 178, 0.4);
+        }
+
+        .submit-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .submit-btn:hover::before {
+            left: 100%;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            margin: 3rem 0;
+        }
+
+        .loading-spinner {
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            border: 5px solid rgba(34, 197, 94, 0.2);
+            border-radius: 50%;
+            border-top-color: var(--primary-color);
+            animation: spin 1s ease-in-out infinite;
+            box-shadow: 0 0 30px rgba(34, 197, 94, 0.3);
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .destinations-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+            perspective: 1000px;
+        }
+
+        .destination-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: var(--transition-bounce);
+            transform-style: preserve-3d;
+            position: relative;
+            opacity: 0;
+            animation: fadeInCards 0.8s forwards;
+            animation-delay: calc(var(--card-index) * 0.15s);
+        }
+
+        .destination-card:hover {
+            transform: translateY(-10px) rotateX(5deg) rotateY(5deg);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .destination-image {
+            position: relative;
+            width: 100%;
+            height: 220px;
+            overflow: hidden;
+        }
+
+        .destination-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .destination-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .destination-card .card-content {
+            padding: 1.8rem;
+            transition: var(--transition-normal);
+        }
+
+        .destination-card:hover .card-content {
+            background: #f8fbff;
+        }
+
+        .destination-card h3 {
+            margin: 0 0 0.8rem;
+            color: var(--dark-color);
+            font-size: 1.4rem;
+            position: relative;
+            transition: var(--transition-normal);
+        }
+
+        .destination-card:hover h3 {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .destination-card .match-score {
+            display: inline-block;
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            margin-bottom: 1.2rem;
+            font-weight: 600;
+            box-shadow: 0 3px 8px rgba(9, 144, 178, 0.2);
+            transition: var(--transition-bounce);
+        }
+
+        .destination-card:hover .match-score {
+            transform: scale(1.1);
+            box-shadow: 0 5px 12px rgba(9, 144, 178, 0.3);
+        }
+
+        .destination-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .destination-tag {
+            background: linear-gradient(120deg, #e6f7ff, #f0f7ff);
+            color: var(--secondary-color);
+            font-size: 0.8rem;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            display: inline-block;
+            transition: var(--transition-normal);
+            transform: translateY(0);
+        }
+
+        .destination-card:hover .destination-tag {
+            transform: translateY(-3px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+        
+        .destination-card .daily-cost {
+            font-weight: 700;
+            color: var(--secondary-color);
+            margin-bottom: 1.5rem;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+        
+        .destination-card .daily-cost::before {
+            content: '💰';
+            font-size: 1.2rem;
+        }
+
+        .destination-card .select-btn {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 0.9rem 1.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: var(--transition-bounce);
+            width: 100%;
+            box-shadow: 0 4px 12px rgba(9, 144, 178, 0.25);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .destination-card .select-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            transition: 0.5s;
+        }
+
+        .destination-card .select-btn:hover::before {
+            left: 100%;
+        }
+
+        .destination-card .select-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            box-shadow: 0 8px 20px rgba(9, 144, 178, 0.35);
+        }
+
+        .destination-card .select-btn:active {
+            transform: translateY(2px);
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes fadeInUp {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInCards {
+            from { 
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Day Cards */
+        .day-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+            margin-top: 3rem;
+        }
+
+        .day-card {
+            background: white;
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: var(--transition-normal);
+            opacity: 0;
+            animation: fadeInUp 0.8s forwards;
+            animation-delay: calc(var(--day-index) * 0.2s);
+        }
+
+        .day-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.12);
+        }
+
+        .day-header {
+            background: linear-gradient(120deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1.2rem 1.8rem;
+            font-weight: 600;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .day-header::after {
+            content: '📅';
+            font-size: 1.5rem;
+        }
+
+        .day-activities {
+            padding: 1.8rem;
+        }
+
+        .activity-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 1.2rem;
+            border-bottom: 1px solid #e2e8f0;
+            transition: var(--transition-normal);
+            border-radius: 12px;
+            margin-bottom: 0.5rem;
+        }
+
+        .activity-item:last-child {
+            border-bottom: none;
+        }
+
+        .activity-item:hover {
+            background: #f8fafc;
+            transform: translateX(8px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .activity-icon {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            transition: var(--transition-bounce);
+        }
+
+        .activity-item:hover .activity-icon {
+            transform: scale(1.2);
+        }
+
+        .activity-details {
+            flex: 1;
+        }
+
+        .activity-details h4 {
+            margin: 0 0 0.8rem;
+            color: var(--dark-color);
+            font-size: 1.2rem;
+            transition: var(--transition-normal);
+        }
+
+        .activity-item:hover .activity-details h4 {
+            color: var(--primary-color);
+        }
+
+        .activity-details p {
+            margin: 0;
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        .activity-meta {
+            display: flex;
+            gap: 1.2rem;
+            margin-top: 0.8rem;
+            font-size: 0.9rem;
+        }
+
+        .activity-meta span {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--secondary-color);
+            background: #f0f7ff;
+            padding: 0.3rem 0.7rem;
+            border-radius: 20px;
+            transition: var(--transition-normal);
+        }
+
+        .activity-item:hover .activity-meta span {
+            background: #e6f7ff;
+            transform: translateY(-3px);
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        /* Ripple effect for buttons */
+        .submit-btn, .select-btn, .book-btn {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .ripple-effect {
+            position: absolute;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.6);
+            transform: scale(0);
+            animation: ripple 0.6s linear;
+            pointer-events: none;
+        }
+
+        @keyframes ripple {
+            to {
+                transform: scale(2.5);
+                opacity: 0;
+            }
+        }
+
+        /* Focused form element effect */
+        .form-group.focused label {
+            color: var(--primary-color);
+            transform: translateY(-5px);
+        }
+
+        .form-group.focused input,
+        .form-group.focused select,
+        .form-group.focused textarea {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 4px rgba(34, 197, 94, 0.2);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .ai-planner-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+            
+            .destinations-list {
+                grid-template-columns: 1fr;
+            }
+
+            .page-banner {
+                padding: 3rem 1rem;
+                border-radius: 0 0 30% 30% / 15px;
+            }
+
+            .page-banner h1 {
+                font-size: 2.2rem;
+            }
+
+            .page-banner p {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1><a href="../index.html">TravelEase</a></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-ticket-alt"></i> Book Tickets <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-content">
+                        <li><a href="bus.html"><i class="fas fa-bus"></i> Bus</a></li>
+                        <li><a href="train.html"><i class="fas fa-train"></i> Train</a></li>
+                        <li><a href="flights.html"><i class="fas fa-plane"></i> Flights</a></li>
+                        <li><a href="cabs.html"><i class="fas fa-taxi"></i> Cabs</a></li>
+                    </ul>
+                </li>
+                <li><a href="customize-trip.html"><i class="fas fa-route"></i> Customize Trip</a></li>
+                <li><a href="attractions.html"><i class="fas fa-landmark"></i> Top Attractions</a></li>
+                <li><a href="ai-planner.html" class="active"><i class="fas fa-robot"></i> AI Trip Planner</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fas fa-user"></i> Login/Sign Up</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-banner">
+        <div class="banner-content">
+            <h1>AI-Powered Trip Planner</h1>
+            <p>Let our advanced AI suggest destinations and create personalized itineraries for you</p>
+        </div>
+    </div>
+
+    <main class="ai-planner-container">
+        <section id="ai-form-section">
+            <h2>Tell Us About Your Dream Trip</h2>
+            <p>Our AI will analyze your preferences to suggest the perfect destinations for you</p>
+            
+            <form id="ai-planner-form" class="ai-form">
+                <div class="form-group">
+                    <label for="interests">What are you interested in?</label>
+                    <div class="interest-checkboxes">
+                        <div class="interest-item">
+                            <input type="checkbox" id="cultural" name="interests" value="cultural">
+                            <label for="cultural">Cultural</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="historical" name="interests" value="historical">
+                            <label for="historical">Historical</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="food" name="interests" value="food">
+                            <label for="food">Food</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="adventure" name="interests" value="adventure">
+                            <label for="adventure">Adventure</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="nature" name="interests" value="nature">
+                            <label for="nature">Nature</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="beach" name="interests" value="beach">
+                            <label for="beach">Beach</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="nightlife" name="interests" value="nightlife">
+                            <label for="nightlife">Nightlife</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="shopping" name="interests" value="shopping">
+                            <label for="shopping">Shopping</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="museums" name="interests" value="museums">
+                            <label for="museums">Museums</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="relaxation" name="interests" value="relaxation">
+                            <label for="relaxation">Relaxation</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="photography" name="interests" value="photography">
+                            <label for="photography">Photography</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="wildlife" name="interests" value="wildlife">
+                            <label for="wildlife">Wildlife</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="architecture" name="interests" value="architecture">
+                            <label for="architecture">Architecture</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="yoga" name="interests" value="yoga">
+                            <label for="yoga">Yoga & Wellness</label>
+                        </div>
+                        <div class="interest-item">
+                            <input type="checkbox" id="water-sports" name="interests" value="water-sports">
+                            <label for="water-sports">Water Sports</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget">Your Budget (INR)</label>
+                    <input type="number" id="budget" name="budget" min="5000" step="1000" value="50000" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="budget-flexibility">Budget Flexibility</label>
+                    <select id="budget-flexibility" name="budget-flexibility">
+                        <option value="strict">Strict - Stay within budget</option>
+                        <option value="flexible" selected>Flexible - Can spend 10-20% more</option>
+                        <option value="very-flexible">Very Flexible - Can spend 30-50% more</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="accommodation-preference">Accommodation Preference</label>
+                    <select id="accommodation-preference" name="accommodation-preference">
+                        <option value="budget">Budget (Hostels, Guesthouses)</option>
+                        <option value="mid-range" selected>Mid-range (3-star Hotels)</option>
+                        <option value="luxury">Luxury (4-5 star Hotels)</option>
+                        <option value="ultra-luxury">Ultra Luxury (Premium Resorts)</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="travel-style">Travel Style</label>
+                    <select id="travel-style" name="travel-style">
+                        <option value="slow">Slow paced - Few activities, more free time</option>
+                        <option value="balanced" selected>Balanced - Mix of activities and free time</option>
+                        <option value="fast">Fast paced - Packed itinerary, see as much as possible</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="duration">Trip Duration (Days)</label>
+                    <input type="number" id="duration" name="duration" min="1" max="30" value="7" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="start-date">Start Date</label>
+                    <input type="date" id="start-date" name="start-date" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="travelers">Number of Travelers</label>
+                    <div class="traveler-inputs">
+                        <div class="traveler-group">
+                            <label for="adults">Adults</label>
+                            <input type="number" id="adults" name="adults" min="1" max="10" value="2">
+                        </div>
+                        <div class="traveler-group">
+                            <label for="children">Children</label>
+                            <input type="number" id="children" name="children" min="0" max="10" value="0">
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label>Specific Requirements</label>
+                    <div class="requirements-checkboxes">
+                        <div class="requirement-item">
+                            <input type="checkbox" id="wheelchair" name="requirements" value="wheelchair">
+                            <label for="wheelchair">Wheelchair Accessible</label>
+                        </div>
+                        <div class="requirement-item">
+                            <input type="checkbox" id="pet-friendly" name="requirements" value="pet-friendly">
+                            <label for="pet-friendly">Pet Friendly</label>
+                        </div>
+                        <div class="requirement-item">
+                            <input type="checkbox" id="vegetarian" name="requirements" value="vegetarian">
+                            <label for="vegetarian">Vegetarian Options</label>
+                        </div>
+                        <div class="requirement-item">
+                            <input type="checkbox" id="family-friendly" name="requirements" value="family-friendly">
+                            <label for="family-friendly">Family Friendly</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <button type="submit" class="submit-btn">Generate Recommendations</button>
+            </form>
+        </section>
+        
+        <div id="loading" class="loading">
+            <div class="loading-spinner"></div>
+            <p>Our AI is working on your personalized recommendations...</p>
+        </div>
+        
+        <section id="destinations-section" style="display: none;">
+            <h2>Recommended Destinations for You</h2>
+            <p>Based on your preferences, these destinations are a great match:</p>
+            
+            <div id="destinations-list" class="destinations-list">
+                <!-- Destinations will be populated by JavaScript -->
+            </div>
+        </section>
+        
+        <section id="itinerary-section" class="result-section">
+            <div class="section-header">
+                <h2>Trip Itinerary</h2>
+            </div>
+            <div class="itinerary-details">
+                <div class="itinerary-header">
+                    <h3 id="itinerary-destination">Destination</h3>
+                    <div class="itinerary-meta">
+                        <div class="meta-item">
+                            <i class="far fa-calendar-alt"></i>
+                            <span id="itinerary-duration"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="far fa-calendar-check"></i>
+                            <span id="itinerary-dates"></span>
+                        </div>
+                        <div class="meta-item">
+                            <i class="fas fa-rupee-sign"></i>
+                            <span id="itinerary-budget"></span>
+                            <span> (₹<span id="itinerary-daily-budget"></span>/day)</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="itinerary-budget">
+                    <h3>Budget Breakdown</h3>
+                    <div id="budget-grid" class="budget-grid"></div>
+                </div>
+                
+                <div class="itinerary-daily">
+                    <h3>Detailed Itinerary</h3>
+                    <div id="itinerary-list" class="itinerary-list"></div>
+                </div>
+                
+                <div class="itinerary-actions">
+                    <button class="action-btn" id="download-btn">
+                        <i class="fas fa-download"></i> Save Itinerary
+                    </button>
+                    <button class="action-btn" id="share-btn">
+                        <i class="fas fa-share-alt"></i> Share
+                    </button>
+                    <button class="action-btn" id="modify-btn">
+                        <i class="fas fa-edit"></i> Modify
+                    </button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="footer-container">
+            <div class="footer-links">
+                <div class="footer-section">
+                    <h3>About TravelEase</h3>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Our Team</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Careers</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Support</h3>
+                    <ul>
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Contact Us</a></li>
+                        <li><a href="#">FAQs</a></li>
+                        <li><a href="#">Feedback</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Legal</h3>
+                    <ul>
+                        <li><a href="#">Terms & Conditions</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Cookie Policy</a></li>
+                        <li><a href="#">Security</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2023 TravelEase. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <script src="../js/script.js"></script>
+    <script src="../js/ai-planner.js"></script>
+    <script>
+        // Existing JavaScript code...
+
+        // Add animation initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            // Add animation delay to destination cards
+            const destinationCards = document.querySelectorAll('.destination-card');
+            destinationCards.forEach((card, index) => {
+                card.style.setProperty('--card-index', index);
+            });
+
+            // Add animation delay to day cards
+            const dayCards = document.querySelectorAll('.day-card');
+            dayCards.forEach((card, index) => {
+                card.style.setProperty('--day-index', index);
+            });
+
+            // Add smooth scroll behavior for anchor links
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    const targetElement = document.querySelector(targetId);
+                    
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 100,
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+
+            // Add form input animation effects
+            const formInputs = document.querySelectorAll('input, select, textarea');
+            formInputs.forEach(input => {
+                // Add focus effect
+                input.addEventListener('focus', function() {
+                    this.parentElement.classList.add('focused');
+                });
+
+                // Remove focus effect
+                input.addEventListener('blur', function() {
+                    this.parentElement.classList.remove('focused');
+                });
+            });
+
+            // Add ripple effect to buttons
+            const buttons = document.querySelectorAll('.submit-btn, .select-btn, .book-btn');
+            buttons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    const ripple = document.createElement('span');
+                    ripple.classList.add('ripple-effect');
+                    
+                    // Set position
+                    const rect = this.getBoundingClientRect();
+                    const size = Math.max(rect.width, rect.height);
+                    
+                    ripple.style.width = ripple.style.height = `${size}px`;
+                    ripple.style.left = `${e.clientX - rect.left - size/2}px`;
+                    ripple.style.top = `${e.clientY - rect.top - size/2}px`;
+                    
+                    this.appendChild(ripple);
+                    
+                    setTimeout(() => {
+                        ripple.remove();
+                    }, 600);
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

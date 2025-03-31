@@ -1,0 +1,572 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Train Search Results - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .route-info i {
+            color: #2563eb;
+        }
+
+        .journey-date {
+            color: #64748b;
+            margin-top: 0.5rem;
+        }
+
+        .filters {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+
+        .filter-option {
+            padding: 0.5rem 1rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            white-space: nowrap;
+            transition: all 0.3s ease;
+            background: white;
+        }
+
+        .filter-option:hover,
+        .filter-option.active {
+            background: #eff6ff;
+            border-color: #2563eb;
+            color: #2563eb;
+        }
+
+        .train-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .train-card {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem;
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 2rem;
+        }
+
+        .train-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .train-details {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+        }
+
+        .train-name {
+            flex: 1;
+        }
+
+        .train-name h3 {
+            color: #1a365d;
+            margin-bottom: 0.25rem;
+        }
+
+        .train-number {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .time-details {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-top: 1rem;
+        }
+
+        .departure, .arrival {
+            text-align: center;
+        }
+
+        .time {
+            font-size: 1.25rem;
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .date {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .duration {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            color: #64748b;
+            position: relative;
+            padding: 0 1rem;
+        }
+
+        .duration::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: #e2e8f0;
+            z-index: 1;
+        }
+
+        .duration span {
+            background: white;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.9rem;
+            z-index: 2;
+        }
+
+        .facilities {
+            display: flex;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .facility {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .facility i {
+            color: #2563eb;
+        }
+
+        .price-section {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-left: 1px solid #e2e8f0;
+            padding-left: 2rem;
+        }
+
+        .price-details {
+            text-align: right;
+        }
+
+        .price {
+            font-size: 1.5rem;
+            color: #1a365d;
+            font-weight: 600;
+        }
+
+        .price-info {
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.25rem;
+        }
+
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: #64748b;
+            font-size: 0.9rem;
+            margin-top: 0.5rem;
+        }
+
+        .rating i {
+            color: #eab308;
+        }
+
+        .select-train-btn {
+            background: #2563eb;
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            margin-top: 1rem;
+        }
+
+        .select-train-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: 0.5rem;
+            color: #64748b;
+            display: none;
+        }
+
+        .classes-available {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+
+        .class-tag {
+            background: #f1f5f9;
+            color: #1a365d;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0.25rem;
+            font-size: 0.8rem;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html" class="active">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="search-summary">
+            <div class="route-info">
+                <span id="fromCity">Loading...</span>
+                <i class="fas fa-train"></i>
+                <span id="toCity">Loading...</span>
+            </div>
+            <div class="journey-date" id="journeyDate">Loading...</div>
+        </div>
+
+        <div class="filters">
+            <div class="filter-option" onclick="filterTrains('all')">All Trains</div>
+            <div class="filter-option" onclick="filterTrains('morning')">Morning Departure</div>
+            <div class="filter-option" onclick="filterTrains('afternoon')">Afternoon Departure</div>
+            <div class="filter-option" onclick="filterTrains('evening')">Evening Departure</div>
+            <div class="filter-option" onclick="filterTrains('night')">Night Departure</div>
+            <div class="filter-option" onclick="filterTrains('ac')">AC Trains</div>
+            <div class="filter-option" onclick="filterTrains('nonac')">Non-AC Trains</div>
+        </div>
+
+        <div class="train-list" id="trainList">
+            <!-- Train cards will be generated here -->
+        </div>
+
+        <div class="no-results" id="noResults">
+            No trains found matching your criteria.
+        </div>
+    </div>
+
+    <script>
+        const trainRoutes = {
+            'Mumbai-Delhi': [
+                {
+                    name: 'Rajdhani Express',
+                    number: '12951',
+                    departureTime: '16:35',
+                    arrivalTime: '08:35',
+                    duration: '16h 00m',
+                    classes: ['1A', '2A', '3A'],
+                    facilities: ['Pantry', 'Bedroll', 'E-Catering'],
+                    price: 2200,
+                    rating: 4.5,
+                    type: 'AC'
+                },
+                {
+                    name: 'August Kranti Rajdhani',
+                    number: '12953',
+                    departureTime: '17:40',
+                    arrivalTime: '10:03',
+                    duration: '16h 23m',
+                    classes: ['1A', '2A', '3A'],
+                    facilities: ['Pantry', 'Bedroll', 'E-Catering'],
+                    price: 2100,
+                    rating: 4.3,
+                    type: 'AC'
+                }
+            ],
+            'Delhi-Mumbai': [
+                {
+                    name: 'Rajdhani Express',
+                    number: '12952',
+                    departureTime: '16:25',
+                    arrivalTime: '08:15',
+                    duration: '15h 50m',
+                    classes: ['1A', '2A', '3A'],
+                    facilities: ['Pantry', 'Bedroll', 'E-Catering'],
+                    price: 2200,
+                    rating: 4.5,
+                    type: 'AC'
+                }
+            ],
+            'Mumbai-Bangalore': [
+                {
+                    name: 'Udyan Express',
+                    number: '11301',
+                    departureTime: '08:05',
+                    arrivalTime: '04:30',
+                    duration: '20h 25m',
+                    classes: ['SL', '3A', '2A'],
+                    facilities: ['Pantry', 'E-Catering'],
+                    price: 1500,
+                    rating: 4.0,
+                    type: 'NonAC'
+                }
+            ],
+            'Bangalore-Mumbai': [
+                {
+                    name: 'Udyan Express',
+                    number: '11302',
+                    departureTime: '20:30',
+                    arrivalTime: '16:45',
+                    duration: '20h 15m',
+                    classes: ['SL', '3A', '2A'],
+                    facilities: ['Pantry', 'E-Catering'],
+                    price: 1500,
+                    rating: 4.0,
+                    type: 'NonAC'
+                }
+            ],
+            'Delhi-Bangalore': [
+                {
+                    name: 'Karnataka Express',
+                    number: '12627',
+                    departureTime: '19:15',
+                    arrivalTime: '18:40',
+                    duration: '23h 25m',
+                    classes: ['SL', '3A', '2A'],
+                    facilities: ['Pantry', 'E-Catering'],
+                    price: 1800,
+                    rating: 4.2,
+                    type: 'AC'
+                }
+            ],
+            'Bangalore-Delhi': [
+                {
+                    name: 'Karnataka Express',
+                    number: '12628',
+                    departureTime: '18:40',
+                    arrivalTime: '19:30',
+                    duration: '24h 50m',
+                    classes: ['SL', '3A', '2A'],
+                    facilities: ['Pantry', 'E-Catering'],
+                    price: 1800,
+                    rating: 4.2,
+                    type: 'AC'
+                }
+            ]
+        };
+
+        function createTrainCard(train) {
+            return `
+                <div class="train-card" data-train-number="${train.number}" data-departure-time="${train.departureTime}" data-type="${train.type}">
+                    <div class="train-info">
+                        <div class="train-details">
+                            <div class="train-name">
+                                <h3>${train.name}</h3>
+                                <div class="train-number">${train.number}</div>
+                                <div class="classes-available">
+                                    ${train.classes.map(cls => `<span class="class-tag">${cls}</span>`).join('')}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="time-details">
+                            <div class="departure">
+                                <div class="time">${train.departureTime}</div>
+                                <div class="date" id="departureDate">Loading...</div>
+                            </div>
+                            <div class="duration">
+                                <span>${train.duration}</span>
+                            </div>
+                            <div class="arrival">
+                                <div class="time">${train.arrivalTime}</div>
+                                <div class="date" id="arrivalDate">Loading...</div>
+                            </div>
+                        </div>
+                        <div class="facilities">
+                            ${train.facilities.map(facility => `
+                                <div class="facility">
+                                    <i class="fas fa-check"></i>
+                                    <span>${facility}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    <div class="price-section">
+                        <div class="price-details">
+                            <div class="price">₹${train.price}</div>
+                            <div class="price-info">Starting fare</div>
+                            <div class="rating">
+                                <i class="fas fa-star"></i>
+                                <span>${train.rating}/5</span>
+                            </div>
+                        </div>
+                        <button class="select-train-btn" onclick="selectTrain('${train.number}', ${train.price})">
+                            Select Train
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function getTimeRange(time) {
+            const hour = parseInt(time.split(':')[0]);
+            if (hour >= 4 && hour < 12) return 'morning';
+            if (hour >= 12 && hour < 16) return 'afternoon';
+            if (hour >= 16 && hour < 20) return 'evening';
+            return 'night';
+        }
+
+        function filterTrains(filter) {
+            const trainCards = document.querySelectorAll('.train-card');
+            let visibleCount = 0;
+
+            trainCards.forEach(card => {
+                const departureTime = card.dataset.departureTime;
+                const trainType = card.dataset.type.toLowerCase();
+                let show = true;
+
+                if (filter === 'morning') show = getTimeRange(departureTime) === 'morning';
+                else if (filter === 'afternoon') show = getTimeRange(departureTime) === 'afternoon';
+                else if (filter === 'evening') show = getTimeRange(departureTime) === 'evening';
+                else if (filter === 'night') show = getTimeRange(departureTime) === 'night';
+                else if (filter === 'ac') show = trainType === 'ac';
+                else if (filter === 'nonac') show = trainType === 'nonac';
+
+                card.style.display = show ? 'grid' : 'none';
+                if (show) visibleCount++;
+            });
+
+            document.getElementById('noResults').style.display = visibleCount === 0 ? 'block' : 'none';
+
+            // Update active filter
+            document.querySelectorAll('.filter-option').forEach(option => {
+                option.classList.toggle('active', option.innerText.toLowerCase().includes(filter));
+            });
+        }
+
+        function selectTrain(trainNumber, price) {
+            const params = new URLSearchParams(window.location.search);
+            const selectedTrain = trainRoutes[`${params.get('from')}-${params.get('to')}`].find(t => t.number === trainNumber);
+            
+            // Create new params for seat selection
+            const seatParams = new URLSearchParams();
+            seatParams.append('from', params.get('from'));
+            seatParams.append('to', params.get('to'));
+            seatParams.append('date', params.get('date'));
+            seatParams.append('class', params.get('class'));
+            seatParams.append('passengers', params.get('passengers'));
+            seatParams.append('trainNumber', trainNumber);
+            seatParams.append('trainName', selectedTrain.name);
+            seatParams.append('departureTime', selectedTrain.departureTime);
+            seatParams.append('arrivalTime', selectedTrain.arrivalTime);
+            seatParams.append('duration', selectedTrain.duration);
+            seatParams.append('price', price);
+            
+            window.location.href = `train-seat-selection.html?${seatParams.toString()}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            const from = params.get('from');
+            const to = params.get('to');
+            const date = params.get('date');
+            const trainClass = params.get('class');
+            const passengers = params.get('passengers');
+
+            document.getElementById('fromCity').textContent = from;
+            document.getElementById('toCity').textContent = to;
+
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            document.getElementById('journeyDate').textContent = `${formattedDate} • ${trainClass} • ${passengers} passenger${passengers > 1 ? 's' : ''}`;
+
+            // Get trains for the route
+            const route = `${from}-${to}`;
+            const trains = trainRoutes[route] || [];
+            
+            const trainList = document.getElementById('trainList');
+            if (trains.length > 0) {
+                // Filter trains that have the selected class
+                const availableTrains = trains.filter(train => train.classes.includes(trainClass));
+                
+                if (availableTrains.length > 0) {
+                    trainList.innerHTML = availableTrains.map(train => createTrainCard(train)).join('');
+                    document.querySelectorAll('[id="departureDate"]').forEach(el => el.textContent = formattedDate);
+
+                    // Calculate and set arrival dates
+                    availableTrains.forEach(train => {
+                        const departureDate = new Date(date);
+                        const [hours, minutes] = train.duration.split('h ');
+                        departureDate.setHours(departureDate.getHours() + parseInt(hours));
+                        departureDate.setMinutes(departureDate.getMinutes() + parseInt(minutes));
+                        
+                        const arrivalDate = departureDate.toLocaleDateString('en-GB', {
+                            weekday: 'short',
+                            day: 'numeric',
+                            month: 'short',
+                            year: 'numeric'
+                        });
+                        document.querySelector(`[data-train-number="${train.number}"] [id="arrivalDate"]`).textContent = arrivalDate;
+                    });
+                } else {
+                    document.getElementById('noResults').style.display = 'block';
+                    document.getElementById('noResults').textContent = `No trains found with ${trainClass} class for this route.`;
+                }
+            } else {
+                document.getElementById('noResults').style.display = 'block';
+            }
+        });
+    </script>
+</body>
+</html> 

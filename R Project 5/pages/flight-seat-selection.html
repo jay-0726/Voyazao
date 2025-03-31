@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Flight Seats - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1200px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .flight-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
+        }
+
+        .flight-details {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .airline-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .airline-logo {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f1f5f9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .airline-logo i {
+            color: #2563eb;
+            font-size: 1.2rem;
+        }
+
+        .route-info {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            color: #1a365d;
+            font-size: 1.2rem;
+            font-weight: 500;
+        }
+
+        .route-info i {
+            color: #2563eb;
+        }
+
+        .seat-selection-container {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 2rem;
+        }
+
+        .seat-map {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .seat-map h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+        }
+
+        .airplane {
+            display: flex;
+            flex-direction: column;
+            gap: 2rem;
+        }
+
+        .cabin {
+            margin-bottom: 2rem;
+        }
+
+        .cabin-title {
+            color: #1a365d;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .seat-row {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .row-number {
+            width: 30px;
+            text-align: center;
+            color: #64748b;
+            font-size: 0.9rem;
+            line-height: 2.5;
+        }
+
+        .seats {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .seat-group {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .aisle {
+            width: 2rem;
+        }
+
+        .seat {
+            width: 40px;
+            height: 40px;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            color: #1a365d;
+        }
+
+        .seat:hover {
+            border-color: #2563eb;
+            background: #eff6ff;
+        }
+
+        .seat.selected {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .seat.occupied {
+            background: #e2e8f0;
+            cursor: not-allowed;
+            color: #94a3b8;
+        }
+
+        .seat-legend {
+            display: flex;
+            gap: 2rem;
+            margin-top: 2rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        .legend-seat {
+            width: 20px;
+            height: 20px;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.25rem;
+        }
+
+        .legend-seat.selected {
+            background: #2563eb;
+            border-color: #2563eb;
+        }
+
+        .legend-seat.occupied {
+            background: #e2e8f0;
+        }
+
+        .booking-summary {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 2rem;
+        }
+
+        .booking-summary h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+        }
+
+        .summary-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            color: #64748b;
+        }
+
+        .selected-seats {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .selected-seat-tag {
+            background: #eff6ff;
+            color: #2563eb;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            font-size: 0.9rem;
+        }
+
+        .price-breakdown {
+            border-top: 1px solid #e2e8f0;
+            margin-top: 1rem;
+            padding-top: 1rem;
+        }
+
+        .total-price {
+            font-size: 1.5rem;
+            color: #1a365d;
+            font-weight: 600;
+            margin-top: 1rem;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .proceed-btn {
+            background: #2563eb;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            width: 100%;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 1rem;
+        }
+
+        .proceed-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .proceed-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html" class="active">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="flight-summary">
+            <div class="flight-details">
+                <div class="airline-info">
+                    <div class="airline-logo">
+                        <i class="fas fa-plane"></i>
+                    </div>
+                    <div>
+                        <div id="airlineName">Loading...</div>
+                        <div id="flightNumber">Loading...</div>
+                    </div>
+                </div>
+                <div class="route-info">
+                    <span id="fromCity">Loading...</span>
+                    <i class="fas fa-plane"></i>
+                    <span id="toCity">Loading...</span>
+                </div>
+            </div>
+            <div class="time-info" id="timeInfo">Loading...</div>
+        </div>
+
+        <div class="seat-selection-container">
+            <div class="seat-map">
+                <h2>Select Your Seats</h2>
+                <div class="airplane" id="seatMap">
+                    <!-- Seat map will be generated here -->
+                </div>
+                <div class="seat-legend">
+                    <div class="legend-item">
+                        <div class="legend-seat"></div>
+                        <span>Available</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-seat selected"></div>
+                        <span>Selected</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-seat occupied"></div>
+                        <span>Occupied</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="booking-summary">
+                <h2>Booking Summary</h2>
+                <div class="summary-item">
+                    <span>Selected Seats:</span>
+                    <span id="seatCount">0</span>
+                </div>
+                <div class="selected-seats" id="selectedSeats">
+                    <!-- Selected seats will be shown here -->
+                </div>
+                <div class="price-breakdown">
+                    <div class="summary-item">
+                        <span>Base Fare:</span>
+                        <span id="baseFare">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Seat Charges:</span>
+                        <span id="seatCharges">₹0</span>
+                    </div>
+                    <div class="summary-item">
+                        <span>Taxes & Fees:</span>
+                        <span id="taxes">₹0</span>
+                    </div>
+                </div>
+                <div class="total-price">
+                    <div class="summary-item">
+                        <span>Total Amount:</span>
+                        <span id="totalAmount">₹0</span>
+                    </div>
+                </div>
+                <button class="proceed-btn" id="proceedBtn" disabled onclick="proceedToPayment()">
+                    Proceed to Payment
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let selectedSeats = new Set();
+        const maxSeats = 6; // Maximum seats that can be selected
+        const seatPrice = 500; // Price per seat
+        let basePrice = 0; // Will be set from URL params
+
+        function generateSeatMap() {
+            const seatMap = document.getElementById('seatMap');
+            const cabinTypes = ['Business Class', 'Premium Economy', 'Economy'];
+            
+            cabinTypes.forEach((cabinType, cabinIndex) => {
+                const cabin = document.createElement('div');
+                cabin.className = 'cabin';
+                cabin.innerHTML = `<div class="cabin-title">${cabinType}</div>`;
+
+                const rows = cabinType === 'Business Class' ? 2 : 
+                           cabinType === 'Premium Economy' ? 3 : 15;
+                
+                for (let i = 1; i <= rows; i++) {
+                    const rowNum = cabinIndex === 0 ? i :
+                                 cabinIndex === 1 ? i + 2 :
+                                 i + 5;
+                    
+                    const row = document.createElement('div');
+                    row.className = 'seat-row';
+                    row.innerHTML = `
+                        <div class="row-number">${rowNum}</div>
+                        <div class="seats">
+                            <div class="seat-group">
+                                ${generateSeats(rowNum, 'ABC')}
+                            </div>
+                            <div class="aisle"></div>
+                            <div class="seat-group">
+                                ${generateSeats(rowNum, 'DEF')}
+                            </div>
+                        </div>
+                    `;
+                    cabin.appendChild(row);
+                }
+                seatMap.appendChild(cabin);
+            });
+        }
+
+        function generateSeats(row, seats) {
+            return seats.split('').map(seat => {
+                const seatId = `${row}${seat}`;
+                const isOccupied = Math.random() < 0.3; // 30% chance of being occupied
+                return `
+                    <div class="seat ${isOccupied ? 'occupied' : ''}" 
+                         id="${seatId}" 
+                         onclick="toggleSeat('${seatId}')"
+                         ${isOccupied ? 'disabled' : ''}>
+                        ${seat}
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleSeat(seatId) {
+            const seat = document.getElementById(seatId);
+            if (seat.classList.contains('occupied')) return;
+
+            if (seat.classList.contains('selected')) {
+                seat.classList.remove('selected');
+                selectedSeats.delete(seatId);
+            } else if (selectedSeats.size < maxSeats) {
+                seat.classList.add('selected');
+                selectedSeats.add(seatId);
+            } else {
+                alert(`You can only select up to ${maxSeats} seats.`);
+                return;
+            }
+
+            updateBookingSummary();
+        }
+
+        function updateBookingSummary() {
+            const seatCount = selectedSeats.size;
+            document.getElementById('seatCount').textContent = seatCount;
+
+            const selectedSeatsContainer = document.getElementById('selectedSeats');
+            selectedSeatsContainer.innerHTML = Array.from(selectedSeats)
+                .map(seat => `<div class="selected-seat-tag">${seat}</div>`)
+                .join('');
+
+            const seatCharges = seatCount * seatPrice;
+            const taxes = Math.round((basePrice + seatCharges) * 0.05);
+            const total = basePrice + seatCharges + taxes;
+
+            document.getElementById('baseFare').textContent = `₹${basePrice}`;
+            document.getElementById('seatCharges').textContent = `₹${seatCharges}`;
+            document.getElementById('taxes').textContent = `₹${taxes}`;
+            document.getElementById('totalAmount').textContent = `₹${total}`;
+
+            document.getElementById('proceedBtn').disabled = seatCount === 0;
+        }
+
+        function proceedToPayment() {
+            const params = new URLSearchParams(window.location.search);
+            params.append('selectedSeats', Array.from(selectedSeats).join(','));
+            params.append('seatCharges', selectedSeats.size * seatPrice);
+            window.location.href = `flight-payment.html?${params.toString()}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Update flight details
+            document.getElementById('airlineName').textContent = params.get('airline') || 'Airline';
+            document.getElementById('flightNumber').textContent = params.get('flightNumber') || '';
+            document.getElementById('fromCity').textContent = params.get('from') || '';
+            document.getElementById('toCity').textContent = params.get('to') || '';
+            
+            const date = params.get('departDate');
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                weekday: 'short',
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+            
+            document.getElementById('timeInfo').textContent = `${formattedDate} • ${params.get('departureTime')} - ${params.get('arrivalTime')}`;
+            
+            // Set base price
+            basePrice = parseInt(params.get('price')) || 0;
+            updateBookingSummary();
+
+            // Generate seat map
+            generateSeatMap();
+        });
+    </script>
+</body>
+</html> 

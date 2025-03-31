@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Booking Confirmation - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .confirmation-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .confirmation-header i {
+            font-size: 4rem;
+            color: #22c55e;
+            margin-bottom: 1rem;
+        }
+
+        .confirmation-header h1 {
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .confirmation-header p {
+            color: #64748b;
+        }
+
+        .ticket {
+            background: white;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .ticket-header {
+            background: #1a365d;
+            color: white;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .ticket-header h2 {
+            margin: 0;
+            font-size: 1.5rem;
+        }
+
+        .booking-id {
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+
+        .ticket-body {
+            padding: 2rem;
+        }
+
+        .journey-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .detail-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .detail-label {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .detail-value {
+            color: #1a365d;
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .passenger-details {
+            margin-bottom: 2rem;
+        }
+
+        .passenger-details h3 {
+            color: #1a365d;
+            margin-bottom: 1rem;
+        }
+
+        .seat-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .seat-item {
+            background: #f8fafc;
+            padding: 0.75rem 1rem;
+            border-radius: 0.5rem;
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .payment-details {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+        }
+
+        .payment-details h3 {
+            color: #1a365d;
+            margin-bottom: 1rem;
+        }
+
+        .payment-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            color: #64748b;
+        }
+
+        .payment-total {
+            display: flex;
+            justify-content: space-between;
+            padding-top: 0.5rem;
+            margin-top: 0.5rem;
+            border-top: 1px solid #e2e8f0;
+            color: #1a365d;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .action-button {
+            flex: 1;
+            padding: 1rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .download-ticket {
+            background: #2563eb;
+            color: white;
+            border: none;
+        }
+
+        .download-ticket:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .back-home {
+            background: #f8fafc;
+            color: #1a365d;
+            border: 2px solid #e2e8f0;
+            text-decoration: none;
+        }
+
+        .back-home:hover {
+            background: #f1f5f9;
+            transform: translateY(-2px);
+        }
+
+        @media print {
+            .navbar, .action-buttons {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html" class="active">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="confirmation-header">
+            <i class="fas fa-check-circle"></i>
+            <h1>Booking Confirmed!</h1>
+            <p>Your bus tickets have been booked successfully</p>
+        </div>
+
+        <div class="ticket">
+            <div class="ticket-header">
+                <h2>Bus Ticket</h2>
+                <span class="booking-id" id="bookingId"></span>
+            </div>
+            <div class="ticket-body">
+                <div class="journey-details">
+                    <div class="detail-group">
+                        <span class="detail-label">Bus</span>
+                        <span class="detail-value" id="busName"></span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Type</span>
+                        <span class="detail-value" id="busType"></span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">From</span>
+                        <span class="detail-value" id="fromCity"></span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">To</span>
+                        <span class="detail-value" id="toCity"></span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Date</span>
+                        <span class="detail-value" id="journeyDate"></span>
+                    </div>
+                    <div class="detail-group">
+                        <span class="detail-label">Departure Time</span>
+                        <span class="detail-value">9:00 PM</span>
+                    </div>
+                </div>
+
+                <div class="passenger-details">
+                    <h3>Seat Details</h3>
+                    <div class="seat-list" id="seatList">
+                        <!-- Seats will be added here dynamically -->
+                    </div>
+                </div>
+
+                <div class="payment-details">
+                    <h3>Payment Details</h3>
+                    <div class="payment-row">
+                        <span>Payment Method</span>
+                        <span id="paymentMethod"></span>
+                    </div>
+                    <div class="payment-row">
+                        <span>Base Fare</span>
+                        <span id="baseFare"></span>
+                    </div>
+                    <div class="payment-row">
+                        <span>Tax (5%)</span>
+                        <span id="tax"></span>
+                    </div>
+                    <div class="payment-total">
+                        <span>Total Amount Paid</span>
+                        <span id="totalAmount"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="action-buttons">
+            <button class="action-button download-ticket" onclick="window.print()">
+                <i class="fas fa-download"></i> Download Ticket
+            </button>
+            <a href="../index.html" class="action-button back-home">
+                <i class="fas fa-home"></i> Back to Home
+            </a>
+        </div>
+    </div>
+
+    <script>
+        function generateBookingId() {
+            const timestamp = Date.now().toString(36);
+            const random = Math.random().toString(36).substr(2, 5);
+            return `BK${timestamp}${random}`.toUpperCase();
+        }
+
+        function formatPaymentMethod(method) {
+            switch (method) {
+                case 'card':
+                    return 'Credit/Debit Card';
+                case 'upi':
+                    return 'UPI';
+                case 'netbanking':
+                    return 'Net Banking';
+                default:
+                    return method;
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            const params = new URLSearchParams(window.location.search);
+            
+            // Generate and display booking ID
+            document.getElementById('bookingId').textContent = generateBookingId();
+            
+            // Update journey details
+            document.getElementById('busName').textContent = params.get('busName') || '';
+            document.getElementById('busType').textContent = params.get('busType') || '';
+            document.getElementById('fromCity').textContent = params.get('from') || '';
+            document.getElementById('toCity').textContent = params.get('to') || '';
+            
+            const date = params.get('date') || '2024-03-30';
+            const formattedDate = new Date(date).toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+            });
+            document.getElementById('journeyDate').textContent = formattedDate;
+
+            // Display selected seats
+            const seatList = document.getElementById('seatList');
+            const selectedSeats = (params.get('selectedSeats') || '').split(',');
+            selectedSeats.forEach(seat => {
+                if (seat) {
+                    const seatItem = document.createElement('div');
+                    seatItem.className = 'seat-item';
+                    seatItem.textContent = `Seat ${seat}`;
+                    seatList.appendChild(seatItem);
+                }
+            });
+
+            // Update payment details
+            document.getElementById('paymentMethod').textContent = formatPaymentMethod(params.get('paymentMethod') || 'card');
+            
+            const totalAmount = parseFloat(params.get('totalAmount')) || 0;
+            const baseFare = totalAmount / 1.05; // Remove 5% tax
+            const tax = totalAmount - baseFare;
+
+            document.getElementById('baseFare').textContent = `₹${baseFare.toFixed(2)}`;
+            document.getElementById('tax').textContent = `₹${tax.toFixed(2)}`;
+            document.getElementById('totalAmount').textContent = `₹${totalAmount.toFixed(2)}`;
+        });
+    </script>
+</body>
+</html> 

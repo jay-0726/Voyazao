@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 0;
+        }
+        
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        
+        h1 {
+            color: #333;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        
+        select {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            font-size: 16px;
+            border: 1px solid #3498db;
+            border-radius: 4px;
+            background-color: #fff;
+            appearance: menulist;
+            -webkit-appearance: menulist;
+            -moz-appearance: menulist;
+        }
+        
+        button {
+            background-color: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        
+        button:hover {
+            background-color: #2980b9;
+        }
+        
+        .result {
+            margin-top: 20px;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Dropdown Test</h1>
+        
+        <div class="form-group">
+            <label for="from">From:</label>
+            <select id="from" name="from">
+                <option value="" disabled selected>Select Departure City</option>
+                <option value="delhi">Delhi</option>
+                <option value="mumbai">Mumbai</option>
+                <option value="bangalore">Bangalore</option>
+                <option value="chennai">Chennai</option>
+                <option value="kolkata">Kolkata</option>
+            </select>
+        </div>
+        
+        <div class="form-group">
+            <label for="to">To:</label>
+            <select id="to" name="to">
+                <option value="" disabled selected>Select Destination City</option>
+            </select>
+        </div>
+        
+        <button id="update-button">Update Destination Options</button>
+        <button id="check-button">Check Dropdown State</button>
+        
+        <div class="result" id="result">
+            Results will appear here
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('Page loaded');
+            
+            const destinations = {
+                'delhi': ['Mumbai', 'Bangalore', 'Chennai', 'Kolkata', 'Jaipur', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'mumbai': ['Delhi', 'Bangalore', 'Chennai', 'Kolkata', 'Pune', 'Udaipur', 'Goa', 'Manali'],
+                'bangalore': ['Delhi', 'Mumbai', 'Chennai', 'Kolkata', 'Mysore', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'chennai': ['Delhi', 'Mumbai', 'Bangalore', 'Kolkata', 'Udaipur', 'Goa', 'Pune', 'Manali'],
+                'kolkata': ['Delhi', 'Mumbai', 'Bangalore', 'Chennai', 'Udaipur', 'Goa', 'Pune', 'Manali']
+            };
+            
+            const fromSelect = document.getElementById('from');
+            const toSelect = document.getElementById('to');
+            const updateButton = document.getElementById('update-button');
+            const checkButton = document.getElementById('check-button');
+            const resultDiv = document.getElementById('result');
+            
+            // Function to update destination options
+            function updateDestinations() {
+                const fromCity = fromSelect.value;
+                resultDiv.innerHTML = `<p>Updating destinations for: ${fromCity}</p>`;
+                
+                // Clear existing options
+                toSelect.innerHTML = '';
+                
+                // Add default option
+                const defaultOption = document.createElement('option');
+                defaultOption.value = '';
+                defaultOption.textContent = 'Select Destination City';
+                defaultOption.disabled = true;
+                defaultOption.selected = true;
+                toSelect.appendChild(defaultOption);
+                
+                // If no city is selected, exit
+                if (!fromCity) {
+                    resultDiv.innerHTML += '<p>No departure city selected</p>';
+                    return;
+                }
+                
+                // Get destinations for the selected city
+                const cityDestinations = destinations[fromCity] || [];
+                
+                // Add destinations to dropdown
+                cityDestinations.forEach(destination => {
+                    const option = document.createElement('option');
+                    option.value = destination.toLowerCase();
+                    option.textContent = destination;
+                    toSelect.appendChild(option);
+                });
+                
+                resultDiv.innerHTML += `<p>Added ${cityDestinations.length} destinations</p>`;
+            }
+            
+            // Function to check dropdown state
+            function checkDropdowns() {
+                let result = '<h3>Dropdown State:</h3>';
+                
+                if (fromSelect) {
+                    result += `<p>From select: ${fromSelect.options.length} options</p>`;
+                    result += `<p>Selected value: "${fromSelect.value}"</p>`;
+                    result += `<p>CSS Display: ${getComputedStyle(fromSelect).display}</p>`;
+                    result += `<p>CSS Visibility: ${getComputedStyle(fromSelect).visibility}</p>`;
+                } else {
+                    result += '<p>From select not found</p>';
+                }
+                
+                if (toSelect) {
+                    result += `<p>To select: ${toSelect.options.length} options</p>`;
+                    result += `<p>Selected value: "${toSelect.value}"</p>`;
+                    result += `<p>CSS Display: ${getComputedStyle(toSelect).display}</p>`;
+                    result += `<p>CSS Visibility: ${getComputedStyle(toSelect).visibility}</p>`;
+                    
+                    result += '<p>Options:</p><ul>';
+                    for (let i = 0; i < toSelect.options.length; i++) {
+                        result += `<li>Option ${i}: ${toSelect.options[i].value} - ${toSelect.options[i].text}</li>`;
+                    }
+                    result += '</ul>';
+                } else {
+                    result += '<p>To select not found</p>';
+                }
+                
+                resultDiv.innerHTML = result;
+            }
+            
+            // Event listeners
+            fromSelect.addEventListener('change', updateDestinations);
+            updateButton.addEventListener('click', updateDestinations);
+            checkButton.addEventListener('click', checkDropdowns);
+            
+            // Initial check
+            checkDropdowns();
+        });
+    </script>
+</body>
+</html> 

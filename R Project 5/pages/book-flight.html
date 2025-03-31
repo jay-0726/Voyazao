@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Flight Tickets - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        .container {
+            max-width: 1000px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        .booking-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .form-header {
+            margin-bottom: 2rem;
+        }
+
+        .form-header h1 {
+            color: #1a365d;
+            margin-bottom: 0.5rem;
+        }
+
+        .form-header p {
+            color: #64748b;
+        }
+
+        .trip-type {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .trip-option {
+            flex: 1;
+            padding: 1rem;
+            text-align: center;
+            border: 2px solid #e2e8f0;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .trip-option.active {
+            background: #2563eb;
+            color: white;
+            border-color: #2563eb;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .form-group label {
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group select {
+            padding: 0.75rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #2563eb;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+        }
+
+        .passenger-details {
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .passenger-details h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+        }
+
+        .passenger-count {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .count-group {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .count-control {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 0.5rem;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem;
+        }
+
+        .count-button {
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            background: #f1f5f9;
+            color: #1a365d;
+            border-radius: 0.25rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .count-button:hover {
+            background: #e2e8f0;
+        }
+
+        .count-value {
+            flex: 1;
+            text-align: center;
+            font-weight: 500;
+            color: #1a365d;
+        }
+
+        .search-button {
+            background: #2563eb;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 2rem;
+        }
+
+        .search-button:hover {
+            background: #1d4ed8;
+            transform: translateY(-2px);
+        }
+
+        .popular-routes {
+            margin-top: 3rem;
+        }
+
+        .popular-routes h2 {
+            color: #1a365d;
+            margin-bottom: 1.5rem;
+        }
+
+        .routes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .route-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 0.5rem;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .route-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .route-cities {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: #1a365d;
+            font-weight: 500;
+        }
+
+        .route-cities i {
+            color: #2563eb;
+        }
+
+        .route-info {
+            display: flex;
+            justify-content: space-between;
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .return-date {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html" class="active">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="booking-form">
+            <div class="form-header">
+                <h1>Book Flight Tickets</h1>
+                <p>Search flights and book your next journey</p>
+            </div>
+
+            <div class="trip-type">
+                <div class="trip-option active" onclick="selectTripType(this, 'oneway')">
+                    One Way
+                </div>
+                <div class="trip-option" onclick="selectTripType(this, 'roundtrip')">
+                    Round Trip
+                </div>
+            </div>
+
+            <form id="flightBookingForm" onsubmit="searchFlights(event)">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="fromCity">From</label>
+                        <input type="text" id="fromCity" required placeholder="Enter departure city">
+                    </div>
+                    <div class="form-group">
+                        <label for="toCity">To</label>
+                        <input type="text" id="toCity" required placeholder="Enter destination city">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="departDate">Departure Date</label>
+                        <input type="date" id="departDate" required>
+                    </div>
+                    <div class="form-group return-date">
+                        <label for="returnDate">Return Date</label>
+                        <input type="date" id="returnDate">
+                    </div>
+                    <div class="form-group">
+                        <label for="class">Class</label>
+                        <select id="class" required>
+                            <option value="">Select Class</option>
+                            <option value="economy">Economy</option>
+                            <option value="premium">Premium Economy</option>
+                            <option value="business">Business</option>
+                            <option value="first">First Class</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="passenger-details">
+                    <h2>Passengers</h2>
+                    <div class="passenger-count">
+                        <div class="count-group">
+                            <label>Adults (12+ yrs)</label>
+                            <div class="count-control">
+                                <button type="button" class="count-button" onclick="updateCount('adults', -1)">-</button>
+                                <span class="count-value" id="adultsCount">1</span>
+                                <button type="button" class="count-button" onclick="updateCount('adults', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="count-group">
+                            <label>Children (2-11 yrs)</label>
+                            <div class="count-control">
+                                <button type="button" class="count-button" onclick="updateCount('children', -1)">-</button>
+                                <span class="count-value" id="childrenCount">0</span>
+                                <button type="button" class="count-button" onclick="updateCount('children', 1)">+</button>
+                            </div>
+                        </div>
+                        <div class="count-group">
+                            <label>Infants (0-2 yrs)</label>
+                            <div class="count-control">
+                                <button type="button" class="count-button" onclick="updateCount('infants', -1)">-</button>
+                                <span class="count-value" id="infantsCount">0</span>
+                                <button type="button" class="count-button" onclick="updateCount('infants', 1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="search-button">Search Flights</button>
+            </form>
+        </div>
+
+        <div class="popular-routes">
+            <h2>Popular Routes</h2>
+            <div class="routes-grid">
+                <div class="route-card" onclick="selectRoute('Mumbai', 'Delhi')">
+                    <div class="route-cities">
+                        <span>Mumbai</span>
+                        <i class="fas fa-plane"></i>
+                        <span>Delhi</span>
+                    </div>
+                    <div class="route-info">
+                        <span>2h 10m</span>
+                        <span>Starting from ₹3,999</span>
+                    </div>
+                </div>
+                <div class="route-card" onclick="selectRoute('Bangalore', 'Mumbai')">
+                    <div class="route-cities">
+                        <span>Bangalore</span>
+                        <i class="fas fa-plane"></i>
+                        <span>Mumbai</span>
+                    </div>
+                    <div class="route-info">
+                        <span>1h 45m</span>
+                        <span>Starting from ₹2,999</span>
+                    </div>
+                </div>
+                <div class="route-card" onclick="selectRoute('Delhi', 'Bangalore')">
+                    <div class="route-cities">
+                        <span>Delhi</span>
+                        <i class="fas fa-plane"></i>
+                        <span>Bangalore</span>
+                    </div>
+                    <div class="route-info">
+                        <span>2h 45m</span>
+                        <span>Starting from ₹4,499</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let tripType = 'oneway';
+        const counts = {
+            adults: 1,
+            children: 0,
+            infants: 0
+        };
+
+        function selectTripType(element, type) {
+            document.querySelectorAll('.trip-option').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+            tripType = type;
+
+            const returnDateGroup = document.querySelector('.return-date');
+            if (type === 'roundtrip') {
+                returnDateGroup.style.display = 'block';
+                document.getElementById('returnDate').required = true;
+            } else {
+                returnDateGroup.style.display = 'none';
+                document.getElementById('returnDate').required = false;
+            }
+        }
+
+        function updateCount(type, change) {
+            const newCount = counts[type] + change;
+            const totalPassengers = counts.adults + counts.children + counts.infants;
+
+            // Validation rules
+            if (type === 'adults') {
+                if (newCount < 1 || newCount > 9) return;
+            } else if (type === 'children') {
+                if (newCount < 0 || newCount > 8) return;
+                if (totalPassengers + change > 9) return;
+            } else if (type === 'infants') {
+                if (newCount < 0 || newCount > counts.adults) return;
+                if (totalPassengers + change > 9) return;
+            }
+
+            counts[type] = newCount;
+            document.getElementById(`${type}Count`).textContent = newCount;
+        }
+
+        function selectRoute(from, to) {
+            document.getElementById('fromCity').value = from;
+            document.getElementById('toCity').value = to;
+        }
+
+        function searchFlights(event) {
+            event.preventDefault();
+            
+            const params = new URLSearchParams();
+            params.append('from', document.getElementById('fromCity').value);
+            params.append('to', document.getElementById('toCity').value);
+            params.append('departDate', document.getElementById('departDate').value);
+            params.append('class', document.getElementById('class').value);
+            params.append('adults', counts.adults);
+            params.append('children', counts.children);
+            params.append('infants', counts.infants);
+            
+            if (tripType === 'roundtrip') {
+                params.append('returnDate', document.getElementById('returnDate').value);
+            }
+            
+            // Redirect to flight search results page
+            window.location.href = `flight-search-results.html?${params.toString()}`;
+        }
+
+        // Set minimum date to today
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('departDate').min = today;
+            document.getElementById('returnDate').min = today;
+        });
+    </script>
+</body>
+</html> 

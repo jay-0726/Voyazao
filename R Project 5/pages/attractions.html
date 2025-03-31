@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Attractions - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/attractions.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <h1><a href="../index.html">TravelEase</a></h1>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html"><i class="fas fa-home"></i> Home</a></li>
+                <li class="dropdown">
+                    <a href="#"><i class="fas fa-ticket-alt"></i> Book Tickets <i class="fas fa-caret-down"></i></a>
+                    <ul class="dropdown-content">
+                        <li><a href="bus.html"><i class="fas fa-bus"></i> Bus</a></li>
+                        <li><a href="train.html"><i class="fas fa-train"></i> Train</a></li>
+                        <li><a href="flights.html"><i class="fas fa-plane"></i> Flights</a></li>
+                        <li><a href="cabs.html"><i class="fas fa-taxi"></i> Cabs</a></li>
+                    </ul>
+                </li>
+                <li><a href="customize-trip.html"><i class="fas fa-route"></i> Customize Trip</a></li>
+                <li><a href="attractions.html" class="active"><i class="fas fa-landmark"></i> Top Attractions</a></li>
+                <li><a href="ai-planner.html"><i class="fas fa-robot"></i> AI Trip Planner</a></li>
+                <li><a href="login.html" class="login-btn"><i class="fas fa-user"></i> Login/Sign Up</a></li>
+            </ul>
+            <div class="hamburger">
+                <div class="line1"></div>
+                <div class="line2"></div>
+                <div class="line3"></div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="page-banner">
+        <div class="banner-content">
+            <h1>Discover Amazing Destinations</h1>
+            <p>Explore the world's most popular attractions and hidden gems</p>
+        </div>
+    </div>
+
+    <section class="attractions-filter">
+        <div class="filter-container">
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="attraction-search" placeholder="Search destinations...">
+            </div>
+            <div class="filter-options">
+                <div class="filter-group">
+                    <label>Filter by Continent:</label>
+                    <select id="continent-filter">
+                        <option value="all">All Continents</option>
+                        <option value="asia">Asia</option>
+                        <option value="europe">Europe</option>
+                        <option value="north-america">North America</option>
+                        <option value="south-america">South America</option>
+                        <option value="africa">Africa</option>
+                        <option value="oceania">Oceania</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Filter by Category:</label>
+                    <select id="category-filter">
+                        <option value="all">All Categories</option>
+                        <option value="natural">Natural Wonders</option>
+                        <option value="historical">Historical Sites</option>
+                        <option value="cultural">Cultural Attractions</option>
+                        <option value="modern">Modern Marvels</option>
+                        <option value="adventure">Adventure Destinations</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Sort by:</label>
+                    <select id="sort-filter">
+                        <option value="popularity">Popularity</option>
+                        <option value="name-asc">Name (A-Z)</option>
+                        <option value="name-desc">Name (Z-A)</option>
+                        <option value="rating">Rating</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="attractions-grid">
+        <div class="attraction-card" data-continent="asia" data-category="natural">
+            <div class="attraction-image">
+                <img src="../images/attractions/fuji-mountain.jpg" alt="Mount Fuji">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Mount Fuji</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Japan</p>
+                <p class="description">Japan's highest mountain and an iconic symbol of the country, known for its perfectly symmetrical cone.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=mount-fuji" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Natural</span>
+                        <span class="tag">Mountain</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="europe" data-category="historical">
+            <div class="attraction-image">
+                <img src="../images/attractions/architecture-Roman-Colosseum.jpg" alt="Colosseum">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.7</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Colosseum</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Rome, Italy</p>
+                <p class="description">An ancient amphitheater in the center of Rome, the largest ever built during the Roman Empire.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=colosseum" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Historical</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="north-america" data-category="natural">
+            <div class="attraction-image">
+                <img src="../images/attractions/grand-canyon.jpg" alt="Grand Canyon">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Grand Canyon</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Arizona, USA</p>
+                <p class="description">A steep-sided canyon carved by the Colorado River, known for its overwhelming size and colorful landscape.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=grand-canyon" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Natural</span>
+                        <span class="tag">Canyon</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="asia" data-category="historical">
+            <div class="attraction-image">
+                <img src="../images/attractions/taj-mahal.jpg" alt="Taj Mahal">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Taj Mahal</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Agra, India</p>
+                <p class="description">An ivory-white marble mausoleum commissioned by Mughal emperor Shah Jahan in memory of his wife.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=taj-mahal" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Historical</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="south-america" data-category="historical">
+            <div class="attraction-image">
+                <img src="../images/attractions/Machu Pichu.jpg" alt="Machu Picchu">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Machu Picchu</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Peru</p>
+                <p class="description">An ancient Incan citadel set high in the Andes Mountains, renowned for its sophisticated dry-stone walls.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=machu-picchu" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Historical</span>
+                        <span class="tag">Cultural</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="europe" data-category="cultural">
+            <div class="attraction-image">
+                <img src="../images/attractions/Paris-Eiffel-Tower-Wallpaper-HD-Widescreen.jpg" alt="Eiffel Tower">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.6</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Eiffel Tower</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Paris, France</p>
+                <p class="description">A wrought-iron lattice tower on the Champ de Mars, named after engineer Gustave Eiffel.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=eiffel-tower" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Cultural</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="oceania" data-category="modern">
+            <div class="attraction-image">
+                <img src="../images/attractions/sydney opera house.jpeg" alt="Sydney Opera House">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.7</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Sydney Opera House</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Sydney, Australia</p>
+                <p class="description">A multi-venue performing arts center and one of the 20th century's most distinctive buildings.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=sydney-opera-house" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Modern</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="africa" data-category="natural">
+            <div class="attraction-image">
+                <img src="../images/attractions/Victoria Falls.jpeg" alt="Victoria Falls">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Victoria Falls</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Zambia/Zimbabwe</p>
+                <p class="description">A spectacular waterfall on the Zambezi River, forming the border between Zambia and Zimbabwe.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=victoria-falls" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Natural</span>
+                        <span class="tag">Waterfall</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="north-america" data-category="modern">
+            <div class="attraction-image">
+                <img src="../images/attractions/statue-of-liberty.jpg" alt="Statue of Liberty">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.6</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Statue of Liberty</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> New York, USA</p>
+                <p class="description">A colossal neoclassical sculpture on Liberty Island, a gift from the people of France to the USA.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=statue-of-liberty" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Modern</span>
+                        <span class="tag">Monument</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="asia" data-category="historical">
+            <div class="attraction-image">
+                <img src="../images/attractions/Great wall of China.jpg" alt="Great Wall of China">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.8</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Great Wall of China</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> China</p>
+                <p class="description">A series of fortifications built along the historical northern borders of China to protect against invasions.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=great-wall" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Historical</span>
+                        <span class="tag">Architecture</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="europe" data-category="cultural">
+            <div class="attraction-image">
+                <img src="../images/attractions/Santorini.jpg" alt="Santorini">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Santorini</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Greece</p>
+                <p class="description">A stunning island known for its white-washed buildings, blue domes, and breathtaking sunsets.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=santorini" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Cultural</span>
+                        <span class="tag">Island</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="attraction-card" data-continent="africa" data-category="adventure">
+            <div class="attraction-image">
+                <img src="../images/attractions/serengeti-national-park-elephant.jpg" alt="Serengeti National Park">
+                <div class="attraction-rating">
+                    <i class="fas fa-star"></i>
+                    <span>4.9</span>
+                </div>
+            </div>
+            <div class="attraction-info">
+                <h3>Serengeti National Park</h3>
+                <p class="location"><i class="fas fa-map-marker-alt"></i> Tanzania</p>
+                <p class="description">A vast ecosystem in north-central Tanzania, famous for its annual migration of over 1.5 million wildebeest.</p>
+                <div class="attraction-footer">
+                    <a href="../attraction-details.html?id=serengeti" class="view-details-btn">View Details</a>
+                    <div class="attraction-tags">
+                        <span class="tag">Adventure</span>
+                        <span class="tag">Wildlife</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="load-more-container">
+        <button class="load-more-btn">Load More Attractions</button>
+    </div>
+
+    <section class="travel-tips">
+        <div class="tips-container">
+            <div class="tips-content">
+                <h2>Travel Tips & Guides</h2>
+                <p>Make the most of your trips with our expert travel advice</p>
+                <ul class="tips-list">
+                    <li><i class="fas fa-check-circle"></i> Research local customs and traditions before your visit</li>
+                    <li><i class="fas fa-check-circle"></i> Pack according to the weather and local dress codes</li>
+                    <li><i class="fas fa-check-circle"></i> Learn a few basic phrases in the local language</li>
+                    <li><i class="fas fa-check-circle"></i> Keep digital and physical copies of important documents</li>
+                    <li><i class="fas fa-check-circle"></i> Check visa requirements well in advance</li>
+                </ul>
+                <a href="#" class="download-guide-btn">Download Full Travel Guide</a>
+            </div>
+            <div class="tips-image">
+                <img src="../images/placeholder.jpg" alt="Travel Tips">
+            </div>
+        </div>
+    </section>
+
+    <section class="newsletter-section">
+        <div class="newsletter-container">
+            <h2>Get Destination Updates</h2>
+            <p>Subscribe to receive the latest updates on new destinations, travel deals, and tips</p>
+            <form class="newsletter-form-special">
+                <input type="email" placeholder="Your Email Address">
+                <button type="submit">Subscribe</button>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>TravelEase</h3>
+                <p>Your one-stop solution for all travel needs. Book tickets, plan trips, and discover amazing destinations.</p>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="../index.html">Home</a></li>
+                    <li><a href="attractions.html">Attractions</a></li>
+                    <li><a href="bus.html">Book Bus</a></li>
+                    <li><a href="train.html">Book Train</a></li>
+                    <li><a href="flights.html">Book Flights</a></li>
+                    <li><a href="cabs.html">Book Cabs</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Help & Support</h3>
+                <ul>
+                    <li><a href="contact.html">Contact Us</a></li>
+                    <li><a href="#">FAQs</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Refund Policy</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Newsletter</h3>
+                <p>Subscribe to get special offers and travel tips</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="Your Email">
+                    <button type="submit">Subscribe</button>
+                </form>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 TravelEase. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+    <script src="../js/attractions.js"></script>
+</body>
+</html> 

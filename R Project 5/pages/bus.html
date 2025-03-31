@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bus Travel - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #8e2de2;
+            --secondary-color: #4a00e0;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --background-light: #f8fafc;
+            --white: #ffffff;
+            --shadow-sm: 0 4px 6px rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 10px 15px rgba(0, 0, 0, 0.1);
+            --shadow-lg: 0 20px 25px rgba(74, 0, 224, 0.15);
+            --border-radius: 16px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f6f9fc, #f1f5f9);
+            background-attachment: fixed;
+            color: var(--text-dark);
+            line-height: 1.6;
+        }
+
+        /* Hero Section */
+        .bus-hero {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 6rem 2rem;
+            border-radius: var(--border-radius);
+            color: #ffffff;
+            margin: 2rem auto;
+            max-width: 1200px;
+            text-align: center;
+            box-shadow: var(--shadow-lg);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .bus-hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1570125909232-eb263c188f7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        
+        .bus-hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .bus-hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            animation: fadeInDown 1s ease backwards;
+        }
+        
+        .bus-hero p {
+            font-size: 1.3rem;
+            max-width: 800px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 1s ease 0.3s backwards;
+        }
+
+        .hero-btn {
+            display: inline-block;
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            animation: fadeInUp 1s ease 0.6s backwards;
+        }
+
+        .hero-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.2));
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.5s ease;
+        }
+
+        .hero-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Container Styling */
+        .bus-container {
+            max-width: 1200px;
+            margin: 2rem auto 4rem;
+            padding: 0 2rem;
+        }
+
+        /* Section Titles */
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2.5rem;
+            color: var(--text-dark);
+            font-weight: 700;
+            position: relative;
+            padding-bottom: 1rem;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 2px;
+        }
+
+        /* Popular Routes Section */
+        .popular-routes {
+            max-width: 1200px;
+            margin: 5rem auto;
+            padding: 0 2rem;
+        }
+
+        .route-cards {
+            display: flex;
+            flex-direction: row;
+            justify-content: flex-start;
+            gap: 2rem;
+            overflow-x: auto;
+            padding-bottom: 1.5rem;
+            scroll-behavior: smooth;
+            scrollbar-width: thin;
+            scrollbar-color: var(--primary-color) var(--background-light);
+        }
+
+        .route-cards::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .route-cards::-webkit-scrollbar-track {
+            background: var(--background-light);
+            border-radius: 4px;
+        }
+
+        .route-cards::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            border-radius: 4px;
+        }
+        
+        .route-card {
+            background: var(--white);
+            border-radius: var(--border-radius);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            flex: 0 0 calc(33.33% - 1.5rem);
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 380px;
+            transform: translateY(0);
+        }
+        
+        .route-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            z-index: 0;
+            transition: transform 0.6s ease;
+        }
+        
+        .route-card.delhi-manali::before {
+            background-image: url('../images/buses/delhi to manali.jpg');
+            background-position: center 25%;
+        }
+        
+        .route-card.mumbai-pune::before {
+            background-image: url('../images/buses/Pune--India---June-21--2020--A-view-of-the-Mumbai-_1672771106983.jpg');
+            background-position: center 45%;
+        }
+        
+        .route-card.delhi-udaipur::before {
+            background-image: url('../images/buses/GettyImages-956035876-76efc27d14d24032a3f3d1fcefdc4413.jpg');
+            background-position: center 40%;
+        }
+        
+        .route-card.mumbai-goa::before {
+            background-image: url('../images/buses/india-top-attractions-harmandir-sahib.jpg');
+            background-position: center 30%;
+        }
+        
+        .route-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .route-card:hover::before {
+            transform: scale(1.1);
+        }
+
+        .route-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+            position: relative;
+            z-index: 0;
+        }
+        
+        .route-info {
+            padding: 1.5rem;
+            display: flex;
+            flex-direction: column;
+            flex-grow: 1;
+            position: relative;
+            z-index: 1;
+            background: var(--white);
+        }
+
+        .route-title {
+            font-size: 1.25rem;
+            color: var(--text-dark);
+            margin-bottom: 0.75rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-weight: 600;
+        }
+
+        .route-price {
+            color: var(--primary-color);
+            font-weight: 700;
+            font-size: 1.1rem;
+        }
+
+        .route-duration {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+        
+        .route-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-top: auto;
+        }
+
+        .view-schedule-btn {
+            background: rgba(142, 45, 226, 0.1);
+            color: var(--primary-color);
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+        }
+
+        .book-now-btn {
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            color: var(--white);
+            padding: 0.8rem;
+            border-radius: 8px;
+            text-align: center;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            border: none;
+            font-size: 0.9rem;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+        }
+
+        .book-now-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
+            z-index: -1;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        .view-schedule-btn:hover {
+            background: rgba(142, 45, 226, 0.2);
+            transform: translateY(-3px);
+        }
+        
+        .book-now-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(74, 0, 224, 0.2);
+        }
+
+        .book-now-btn:hover::before {
+            opacity: 1;
+        }
+
+        /* Why Choose Bus Section */
+        .why-bus {
+            background: linear-gradient(135deg, rgba(142, 45, 226, 0.05), rgba(74, 0, 224, 0.05));
+            padding: 4rem 2rem;
+            border-radius: var(--border-radius);
+            margin-bottom: 4rem;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 3rem;
+        }
+        
+        .feature-card {
+            background: var(--white);
+            padding: 2rem;
+            border-radius: var(--border-radius);
+            text-align: center;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            border: 1px solid rgba(142, 45, 226, 0.1);
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: var(--shadow-lg);
+        }
+
+        .feature-card:hover::before {
+            transform: scaleX(1);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            color: var(--primary-color);
+            margin-bottom: 1.5rem;
+            transition: var(--transition);
+        }
+
+        .feature-card:hover .feature-icon {
+            transform: scale(1.1);
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: var(--text-dark);
+        }
+        
+        .feature-desc {
+            font-size: 0.95rem;
+            color: var(--text-light);
+            line-height: 1.6;
+        }
+        
+        /* CTA Section */
+        .cta-section {
+            text-align: center;
+            margin-bottom: 5rem;
+            background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
+            padding: 4rem 2rem;
+            border-radius: var(--border-radius);
+            color: var(--white);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 100px;
+            height: 100px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .cta-section::after {
+            content: '';
+            position: absolute;
+            bottom: -60px;
+            left: -60px;
+            width: 120px;
+            height: 120px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            z-index: 0;
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .cta-content h2 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            font-weight: 700;
+        }
+
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2.5rem;
+            opacity: 0.9;
+        }
+        
+        .cta-btn {
+            display: inline-block;
+            background: var(--white);
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: var(--transition);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+            border: none;
+            cursor: pointer;
+            font-size: 1.1rem;
+        }
+        
+        .cta-btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        /* Animations */
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive Design */
+        @media (max-width: 992px) {
+            .route-card {
+                flex: 0 0 calc(50% - 1rem);
+            }
+            
+            .bus-hero h1 {
+                font-size: 2.8rem;
+            }
+            
+            .cta-content h2 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .route-card {
+                flex: 0 0 calc(100% - 1rem);
+            }
+            
+            .bus-hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .bus-hero p {
+                font-size: 1.1rem;
+            }
+            
+            .section-title {
+                font-size: 1.6rem;
+            }
+            
+            .cta-content h2 {
+                font-size: 1.8rem;
+            }
+            
+            .feature-card {
+                padding: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html">Trains</a></li>
+                <li><a href="bus.html" class="active">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+        <section class="bus-hero">
+            <div class="bus-hero-content">
+            <h1>Travel By Bus Across India</h1>
+            <p>Discover comfortable and affordable bus travel options to thousands of destinations</p>
+            <a href="book-bus.html" class="hero-btn">Book Bus Tickets</a>
+            </div>
+        </section>
+
+    <div class="bus-container">
+        <section class="popular-routes">
+            <h2 class="section-title fade-in">Popular Bus Routes</h2>
+            <div class="route-cards">
+                <div class="route-card delhi-manali fade-in">
+                    <div class="route-info">
+                        <div class="route-title">
+                            Delhi → Manali
+                            <span class="route-price">₹1,200</span>
+                        </div>
+                        <div class="route-duration">
+                            <i class="fas fa-clock"></i> 12h journey
+                    </div>
+                        <p>Enjoy a scenic journey through the Himalayas with comfortable overnight buses.</p>
+                    <div class="route-buttons">
+                            <button class="view-schedule-btn">View Schedule</button>
+                            <a href="book-bus.html" class="book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="route-card mumbai-pune fade-in">
+                    <div class="route-info">
+                        <div class="route-title">
+                            Mumbai → Pune
+                            <span class="route-price">₹450</span>
+                        </div>
+                        <div class="route-duration">
+                            <i class="fas fa-clock"></i> 3h journey
+                    </div>
+                        <p>Quick and frequent bus service between Maharashtra's major cities with express options.</p>
+                    <div class="route-buttons">
+                            <button class="view-schedule-btn">View Schedule</button>
+                            <a href="book-bus.html" class="book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="route-card delhi-udaipur fade-in">
+                    <div class="route-info">
+                        <div class="route-title">
+                            Delhi → Udaipur
+                            <span class="route-price">₹950</span>
+                        </div>
+                        <div class="route-duration">
+                            <i class="fas fa-clock"></i> 10h journey
+                    </div>
+                        <p>Travel to the City of Lakes with luxury sleeper buses featuring premium amenities.</p>
+                    <div class="route-buttons">
+                            <button class="view-schedule-btn">View Schedule</button>
+                            <a href="book-bus.html" class="book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="route-card mumbai-goa fade-in">
+                    <div class="route-info">
+                        <div class="route-title">
+                            Mumbai → Goa
+                            <span class="route-price">₹900</span>
+                        </div>
+                        <div class="route-duration">
+                            <i class="fas fa-clock"></i> 8h journey
+                    </div>
+                        <p>Overnight journey to India's favorite beach destination with AC sleeper options.</p>
+                    <div class="route-buttons">
+                            <button class="view-schedule-btn">View Schedule</button>
+                            <a href="book-bus.html" class="book-now-btn">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="why-bus">
+            <h2 class="section-title fade-in">Why Choose Bus Travel</h2>
+            <div class="features-grid">
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-money-bill-wave"></i>
+                    </div>
+                    <h3 class="feature-title">Cost Effective</h3>
+                    <p class="feature-desc">Bus travel is one of the most economical ways to get around, saving you money for your actual experiences.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-couch"></i>
+                    </div>
+                    <h3 class="feature-title">Comfortable Seating</h3>
+                    <p class="feature-desc">Modern buses offer plush seating, extra legroom, and reclining options for a relaxing journey.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-leaf"></i>
+                    </div>
+                    <h3 class="feature-title">Eco-Friendly</h3>
+                    <p class="feature-desc">Bus travel has a lower carbon footprint compared to cars and airplanes, helping preserve our environment.</p>
+                </div>
+                
+                <div class="feature-card fade-in">
+                    <div class="feature-icon">
+                        <i class="fas fa-route"></i>
+                    </div>
+                    <h3 class="feature-title">Extensive Network</h3>
+                    <p class="feature-desc">Access thousands of destinations across India, including remote locations not served by trains or flights.</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="cta-section">
+            <div class="cta-content">
+            <h2>Ready to Book Your Bus Journey?</h2>
+                <p>Find the best deals on bus tickets to your favorite destinations across India</p>
+                <a href="book-bus.html" class="cta-btn">Book Bus Tickets</a>
+            </div>
+        </section>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Scroll animations
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            const appearOptions = {
+                threshold: 0.15,
+                rootMargin: "0px 0px -100px 0px"
+            };
+            
+            const appearOnScroll = new IntersectionObserver(function(entries, appearOnScroll) {
+                entries.forEach(entry => {
+                    if (!entry.isIntersecting) {
+                        return;
+                    } else {
+                        entry.target.classList.add('appear');
+                        appearOnScroll.unobserve(entry.target);
+                    }
+                });
+            }, appearOptions);
+            
+            fadeElements.forEach(element => {
+                appearOnScroll.observe(element);
+            });
+            
+            // Add delay to staggered animations
+            document.querySelectorAll('.feature-card').forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+            
+            document.querySelectorAll('.route-card').forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+            });
+            
+            // Handle view schedule button
+            document.querySelectorAll('.view-schedule-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    alert('Schedule view will be available soon!');
+                });
+            });
+        });
+    </script>
+</body>
+</html> 

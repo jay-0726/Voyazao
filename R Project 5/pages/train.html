@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Train Tickets - TravelEase</title>
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        :root {
+            --primary-color: #8e2de2;
+            --secondary-color: #4a00e0;
+            --text-dark: #2d3748;
+            --text-light: #718096;
+            --bg-light: #f8fafc;
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            min-height: 60vh;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            padding: 4rem 2rem;
+        }
+
+        .hero-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: url('https://source.unsplash.com/random/1920x1080/?train,railway') center/cover;
+            opacity: 0.15;
+            animation: moveBackground 30s linear infinite alternate;
+        }
+
+        @keyframes moveBackground {
+            from { transform: translateX(0) scale(1); }
+            to { transform: translateX(-20px) scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInDown 0.8s ease;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+        }
+
+        .hero-content p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            animation: fadeInUp 0.8s ease 0.2s backwards;
+        }
+
+        .book-train-btn {
+            display: inline-block;
+            background: white;
+            color: var(--primary-color);
+            padding: 1rem 2.5rem;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s ease;
+            border: 2px solid white;
+            animation: fadeInUp 0.8s ease 0.4s backwards;
+        }
+
+        .book-train-btn:hover {
+            background: transparent;
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .booking-container {
+            max-width: 1200px;
+            margin: -6rem auto 4rem;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .search-form {
+            background: white;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            animation: slideUp 0.8s ease 0.4s backwards;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .form-group {
+            position: relative;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: var(--text-dark);
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 1rem;
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: white;
+            color: var(--text-dark);
+        }
+
+        .form-group input:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(142, 45, 226, 0.1);
+        }
+
+        .form-group i {
+            position: absolute;
+            right: 1rem;
+            top: 2.8rem;
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .search-btn {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            max-width: 200px;
+            margin: 0 auto;
+            display: block;
+        }
+
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(142, 45, 226, 0.2);
+        }
+
+        .popular-routes {
+            padding: 4rem 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .section-title h2 {
+            color: var(--text-dark);
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-title p {
+            color: var(--text-light);
+            font-size: 1.1rem;
+        }
+
+        .routes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .route-card {
+            background: white;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .route-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .route-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .route-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .route-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .route-card:hover .route-image img {
+            transform: scale(1.1);
+        }
+
+        .route-details {
+            padding: 1.5rem;
+        }
+
+        .route-title {
+            font-size: 1.2rem;
+            color: var(--text-dark);
+            margin-bottom: 0.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .route-info {
+            color: var(--text-light);
+            margin-bottom: 1rem;
+        }
+
+        .route-price {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--primary-color);
+            margin-bottom: 1rem;
+        }
+
+        .book-now {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 8px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        .book-now:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(142, 45, 226, 0.2);
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(100px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 {
+                font-size: 2.5rem;
+            }
+
+            .routes-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="navbar">
+        <div class="logo">
+            <a href="../index.html">TravelEase</a>
+        </div>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="../index.html">Home</a></li>
+                <li><a href="flights.html">Flights</a></li>
+                <li><a href="train.html" class="active">Trains</a></li>
+                <li><a href="bus.html">Buses</a></li>
+                <li><a href="cabs.html">Cabs</a></li>
+            </ul>
+        </nav>
+        <div class="auth-buttons">
+            <a href="login.html" class="btn-secondary">Login</a>
+            <a href="signup.html" class="btn-primary">Sign Up</a>
+        </div>
+    </header>
+
+    <section class="hero-section">
+        <div class="hero-content">
+            <h1>Book Train Tickets</h1>
+            <p>Travel across the country with comfort and convenience</p>
+            <a href="book-train.html" class="book-train-btn">Book Train Now</a>
+        </div>
+    </section>
+
+    <div class="booking-container" id="booking">
+        <form class="search-form">
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="from">From Station</label>
+                    <input type="text" id="from" placeholder="Enter departure station">
+                    <i class="fas fa-train"></i>
+                </div>
+                <div class="form-group">
+                    <label for="to">To Station</label>
+                    <input type="text" id="to" placeholder="Enter destination station">
+                    <i class="fas fa-train"></i>
+                </div>
+                <div class="form-group">
+                    <label for="date">Travel Date</label>
+                    <input type="date" id="date">
+                    <i class="fas fa-calendar"></i>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="class">Travel Class</label>
+                    <select id="class">
+                        <option value="all">All Classes</option>
+                        <option value="1A">First AC</option>
+                        <option value="2A">Second AC</option>
+                        <option value="3A">Third AC</option>
+                        <option value="SL">Sleeper</option>
+                        <option value="CC">Chair Car</option>
+                    </select>
+                    <i class="fas fa-couch"></i>
+                </div>
+                <div class="form-group">
+                    <label for="quota">Quota</label>
+                    <select id="quota">
+                        <option value="GN">General</option>
+                        <option value="LD">Ladies</option>
+                        <option value="TQ">Tatkal</option>
+                        <option value="SS">Senior Citizen</option>
+                    </select>
+                    <i class="fas fa-ticket-alt"></i>
+                </div>
+            </div>
+
+            <button type="submit" class="search-btn">Search Trains</button>
+        </form>
+    </div>
+
+    <section class="popular-routes">
+        <div class="section-title">
+            <h2>Popular Train Routes</h2>
+            <p>Explore our most traveled train routes across the country</p>
+        </div>
+
+        <div class="routes-grid">
+            <div class="route-card">
+                <div class="route-image">
+                    <img src="https://source.unsplash.com/random/600x400/?india,train" alt="Delhi to Mumbai">
+                </div>
+                <div class="route-details">
+                    <div class="route-title">Delhi → Mumbai</div>
+                    <div class="route-info">
+                        <i class="fas fa-clock"></i> 17h 15m • Rajdhani Express
+                    </div>
+                    <div class="route-price">From ₹1,890</div>
+                    <a href="book-train.html" class="book-now">Book Now</a>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div class="route-image">
+                    <img src="https://source.unsplash.com/random/600x400/?railway,station" alt="Bangalore to Chennai">
+                </div>
+                <div class="route-details">
+                    <div class="route-title">Bangalore → Chennai</div>
+                    <div class="route-info">
+                        <i class="fas fa-clock"></i> 6h 30m • Shatabdi Express
+                    </div>
+                    <div class="route-price">From ₹890</div>
+                    <a href="book-train.html" class="book-now">Book Now</a>
+                </div>
+            </div>
+
+            <div class="route-card">
+                <div class="route-image">
+                    <img src="https://source.unsplash.com/random/600x400/?train,track" alt="Kolkata to Delhi">
+                </div>
+                <div class="route-details">
+                    <div class="route-title">Kolkata → Delhi</div>
+                    <div class="route-info">
+                        <i class="fas fa-clock"></i> 20h 45m • Duronto Express
+                    </div>
+                    <div class="route-price">From ₹2,190</div>
+                    <a href="book-train.html" class="book-now">Book Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Set minimum date for travel
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('date').setAttribute('min', today);
+
+            // Handle hero section book now button
+            document.querySelector('.book-train-btn').addEventListener('click', function(e) {
+                e.preventDefault();
+                window.location.href = 'book-train.html';
+            });
+
+            // Handle popular routes book now buttons
+            document.querySelectorAll('.book-now').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const routeCard = this.closest('.route-details');
+                    const route = {
+                        from: routeCard.querySelector('.route-title').textContent.split('→')[0].trim(),
+                        to: routeCard.querySelector('.route-title').textContent.split('→')[1].trim(),
+                        train: routeCard.querySelector('.route-info').textContent.split('•')[1].trim(),
+                        price: routeCard.querySelector('.route-price').textContent.replace('From ₹', '')
+                    };
+                    localStorage.setItem('selectedRoute', JSON.stringify(route));
+                    window.location.href = 'book-train.html';
+                });
+            });
+
+            // Form validation and submission
+            document.querySelector('.search-form').addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const from = document.getElementById('from').value;
+                const to = document.getElementById('to').value;
+                const date = document.getElementById('date').value;
+                const travelClass = document.getElementById('class').value;
+                const quota = document.getElementById('quota').value;
+
+                if (!from || !to || !date) {
+                    alert('Please fill in all required fields');
+                    return;
+                }
+
+                // Store search parameters
+                const searchParams = {
+                    from,
+                    to,
+                    date,
+                    travelClass,
+                    quota
+                };
+                localStorage.setItem('trainSearchParams', JSON.stringify(searchParams));
+
+                // Redirect to booking page
+                window.location.href = 'book-train.html';
+            });
+
+            // Animate route cards on scroll
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                    }
+                });
+            }, {
+                threshold: 0.1
+            });
+
+            document.querySelectorAll('.route-card').forEach((card, index) => {
+                card.style.transitionDelay = `${index * 0.1}s`;
+                observer.observe(card);
+            });
+        });
+    </script>
+</body>
+</html> 
